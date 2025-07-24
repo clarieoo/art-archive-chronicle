@@ -1,4 +1,5 @@
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, CheckCircle, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 
@@ -17,6 +19,7 @@ const formSchema = z.object({
   relevantExperience: z.string().min(10, 'Please describe your relevant experience'),
   portfolioWork: z.string().min(10, 'Please describe your portfolio or previous work'),
   motivation: z.string().min(20, 'Please explain why you want to become a curator'),
+  cv: z.any().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -24,6 +27,7 @@ type FormData = z.infer<typeof formSchema>;
 export default function UpgradeCurator() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [cvFile, setCvFile] = useState<File | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -37,10 +41,25 @@ export default function UpgradeCurator() {
     },
   });
 
+  const saveCuratorApplication = async (data: FormData) => {
+    // This function saves the curator application and notifies admin
+    console.log('Saving curator application:', {
+      ...data,
+      cvFile: cvFile?.name || null,
+      submittedAt: new Date().toISOString(),
+      status: 'pending_review',
+      reviewedBy: null,
+    });
+    
+    // In a real app, this would make an API call to save the application
+    // and create a notification for admin to review
+    return true;
+  };
+
   const onSubmit = async (data: FormData) => {
     try {
-      // Handle form submission here
-      console.log('Curator application data:', data);
+      // Save the application
+      await saveCuratorApplication(data);
       
       toast({
         title: "Application Submitted",
@@ -54,6 +73,13 @@ export default function UpgradeCurator() {
         description: "Failed to submit application. Please try again.",
         variant: "destructive",
       });
+    }
+  };
+
+  const handleCvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCvFile(file);
     }
   };
 
@@ -203,6 +229,34 @@ export default function UpgradeCurator() {
                           </FormItem>
                         )}
                       />
+                      
+                      {/* CV Upload */}
+                      <div>
+                        <Label htmlFor="cv-upload">Upload CV/Resume</Label>
+                        <div className="mt-2 flex items-center space-x-4">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => document.getElementById('cv-upload')?.click()}
+                            className="w-full"
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            {cvFile ? cvFile.name : 'Choose CV/Resume file'}
+                          </Button>
+                          <input
+                            id="cv-upload"
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            onChange={handleCvUpload}
+                            className="hidden"
+                          />
+                        </div>
+                        {cvFile && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Selected: {cvFile.name}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
 

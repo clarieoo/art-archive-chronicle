@@ -4,10 +4,11 @@ import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
 
 interface DashboardLayoutProps {
-  userRole: 'curator' | 'professor' | 'admin';
+  userRole: 'visitor' | 'curator' | 'professor' | 'admin';
+  children?: React.ReactNode;
 }
 
-export const DashboardLayout = ({ userRole }: DashboardLayoutProps) => {
+export const DashboardLayout = ({ userRole, children }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleMenuClick = () => {
@@ -27,7 +28,7 @@ export const DashboardLayout = ({ userRole }: DashboardLayoutProps) => {
       />
       
       <main className="relative">
-        <Outlet />
+        {children || <Outlet />}
       </main>
 
       <Sidebar 

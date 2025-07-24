@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import logo from '@/assets/logo.jpg';
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -42,6 +43,16 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen bg-gradient-warm flex items-center justify-center py-12 px-4">
+      {/* Back Arrow */}
+      <Button
+        variant="ghost"
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 hover:bg-muted"
+      >
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Back to Home
+      </Button>
+
       <div className="w-full max-w-md space-y-8">
         {/* Logo and Header */}
         <div className="text-center">

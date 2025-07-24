@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
@@ -8,18 +8,32 @@ interface LayoutProps {
 }
 
 export const Layout = ({ userRole = 'visitor', isAuthenticated = false }: LayoutProps) => {
+  const location = useLocation();
+  
+  // Hide navbar and footer for auth forms and other specific pages
+  const hideNavAndFooter = [
+    '/signin', 
+    '/signup', 
+    '/forgot-password', 
+    '/change-password',
+    '/profile/edit',
+    '/upgrade-curator'
+  ].includes(location.pathname);
+
   return (
     <div className="min-h-screen bg-background">
-      <Navbar 
-        isAuthenticated={isAuthenticated}
-        userRole={userRole}
-      />
+      {!hideNavAndFooter && (
+        <Navbar 
+          isAuthenticated={isAuthenticated}
+          userRole={userRole}
+        />
+      )}
       
       <main className="relative">
         <Outlet />
       </main>
 
-      <Footer />
+      {!hideNavAndFooter && <Footer />}
     </div>
   );
 };

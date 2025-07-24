@@ -140,6 +140,50 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                 <Separator />
 
                 {/* Role-specific sections */}
+                {userRole === 'visitor' && (
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">VISITOR FUNCTIONS</h3>
+                    
+                    <div className="space-y-1">
+                      <Link 
+                        to="/gallery" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Settings className="h-5 w-5" />
+                        <span>Search Artifacts</span>
+                      </Link>
+
+                      <Link 
+                        to="/gallery" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Image className="h-5 w-5" />
+                        <span>View Artifacts</span>
+                      </Link>
+
+                      <Link 
+                        to="/watched-later" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Heart className="h-5 w-5" />
+                        <span>Rate/Save Artifacts</span>
+                      </Link>
+
+                      <Link 
+                        to="/upgrade-curator" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <GraduationCap className="h-5 w-5" />
+                        <span>Upgrade to Curator</span>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
                 {userRole === 'admin' && (
                   <div className="space-y-4">
                     <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">ADMIN</h3>

@@ -28,6 +28,7 @@ import Categories from "./pages/admin/Categories";
 import Reports from "./pages/admin/Reports";
 import { UploadArt } from "./pages/curator/UploadArt";
 import { ReviewArts as ProfessorReviewArts } from "./pages/professor/ReviewArts";
+import VisitorDashboard from "./pages/dashboard/VisitorDashboard";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="profile/edit" element={<EditProfile />} />
             <Route path="upgrade-curator" element={<UpgradeCurator />} />
             <Route path="watched-later" element={<WatchedLater />} />
+            <Route path="dashboard" element={<VisitorDashboard />} />
           </Route>
 
           {/* Admin Dashboard Routes */}
