@@ -32,9 +32,9 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
           {/* Navigation Links - Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/"
+              to="/home"
               className={`font-medium transition-colors hover:text-primary ${
-                isActive('/') ? 'text-primary' : 'text-muted-foreground'
+                isActive('/home') ? 'text-primary' : 'text-muted-foreground'
               }`}
             >
               Home

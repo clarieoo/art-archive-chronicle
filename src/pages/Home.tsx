@@ -38,32 +38,39 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-warm py-20 lg:py-32">
-        <div className="absolute inset-0 opacity-30"></div>
+      <section className="relative overflow-hidden py-20 lg:py-32">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=2071&auto=format&fit=crop')`
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-brown-dark/90 via-brown-medium/80 to-brown-light/85"></div>
         
         <div className="relative container mx-auto px-4 text-center">
-          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
+          <Badge className="mb-6 bg-warm-white/20 text-warm-white border-warm-white/30">
             Historical Archive Collection
           </Badge>
           
-          <h1 className="text-4xl md:text-6xl font-bold text-primary mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-warm-white mb-6 leading-tight">
             Discover the Beauty of
-            <span className="block text-brown-medium">Historical Art</span>
+            <span className="block text-warm-white/90">Historical Art</span>
           </h1>
           
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-warm-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
             Explore our curated collection of 60 remarkable artworks spanning centuries of human creativity. 
             Rate, save, and immerse yourself in the stories behind each masterpiece.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild className="shadow-elegant">
+            <Button size="lg" asChild className="bg-brown-medium hover:bg-brown-medium/90 text-warm-white border-0 shadow-elegant">
               <Link to="/gallery">
                 Explore Gallery
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            <Button variant="outline" size="lg" asChild className="border-2 border-warm-white text-warm-white hover:bg-warm-white hover:text-brown-dark">
               <Link to="/about">Learn More</Link>
             </Button>
           </div>

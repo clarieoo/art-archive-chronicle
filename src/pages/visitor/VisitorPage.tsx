@@ -5,7 +5,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 const VisitorPage = () => {
   return (
     <DashboardLayout userRole="visitor">
-      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <div className="flex items-center justify-center relative overflow-hidden" style={{ minHeight: 'calc(100vh - 64px)' }}>
         {/* Background with museum/gallery aesthetic */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
