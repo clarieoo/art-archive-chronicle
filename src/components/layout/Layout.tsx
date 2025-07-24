@@ -17,7 +17,8 @@ export const Layout = ({ userRole = 'visitor', isAuthenticated = false }: Layout
     '/forgot-password', 
     '/change-password',
     '/profile/edit',
-    '/upgrade-curator'
+    '/upgrade-curator',
+    '/visitor'
   ].includes(location.pathname);
 
   return (
