@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  Home, 
-  Image, 
-  Info, 
-  Mail, 
   User, 
   Edit3, 
   Lock, 
   Heart, 
   LogOut, 
-  ArrowUp,
   Settings,
   Users,
   CheckCircle,
@@ -18,7 +13,8 @@ import {
   Upload,
   MessageSquare,
   GraduationCap,
-  X
+  X,
+  Image
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -63,241 +59,192 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
       
       {/* Sidebar */}
       <div 
-        className={`fixed top-0 right-0 h-full w-80 bg-card border-l shadow-elegant z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-80 bg-background border-l shadow-elegant z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         onDoubleClick={onClose}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b">
-            <h2 className="text-lg font-semibold text-primary">Menu</h2>
+          <div className="flex items-center justify-between p-6 border-b border-border">
+            <h2 className="text-xl font-medium text-foreground">Menu</h2>
             <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           </div>
 
           {/* Account Info */}
           {isAuthenticated && (
-            <div className="p-6 space-y-4">
-              <div className="flex items-center space-x-3 p-3 bg-surface/50 rounded-lg">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                  <User className="h-5 w-5 text-primary" />
+            <div className="p-6">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                  <User className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">John Doe</p>
-                  <p className="text-sm text-muted-foreground capitalize">{userRole}</p>
+                  <p className="font-medium text-foreground text-lg">John Doe</p>
+                  <p className="text-muted-foreground capitalize">{userRole}</p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* User-specific sections */}
+          {/* Content */}
           {isAuthenticated && (
-            <div className="px-6 space-y-2 flex-1">
-              {/* Visitor/Curator sections */}
-              {(userRole === 'visitor' || userRole === 'curator') && (
-                <>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-4">ACCOUNT</h3>
+            <div className="flex-1 overflow-y-auto">
+              <div className="px-6 space-y-6">
+                {/* Account Section */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">ACCOUNT</h3>
                   
-                  <Link 
-                    to="/profile" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/profile') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <User className="h-4 w-4" />
-                    <span>View Profile</span>
-                  </Link>
-
-                  <Link 
-                    to="/profile/edit" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/profile/edit') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Edit3 className="h-4 w-4" />
-                    <span>Edit Profile</span>
-                  </Link>
-
-                  <Link 
-                    to="/change-password" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/change-password') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Lock className="h-4 w-4" />
-                    <span>Change Password</span>
-                  </Link>
-
-                  <Link 
-                    to="/watched-later" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/watched-later') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Heart className="h-4 w-4" />
-                    <span>Watched Later</span>
-                  </Link>
-
-                  {userRole === 'visitor' && (
+                  <div className="space-y-1">
                     <Link 
-                      to="/upgrade-curator" 
+                      to="/profile" 
                       onClick={handleItemClick}
-                      className="flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors bg-accent hover:bg-accent/80 text-accent-foreground"
+                      className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
                     >
-                      <ArrowUp className="h-4 w-4" />
-                      <span>Upgrade to Curator</span>
+                      <User className="h-5 w-5" />
+                      <span>View Profile</span>
                     </Link>
-                  )}
-                </>
-              )}
 
-              {/* Curator specific */}
-              {userRole === 'curator' && (
-                <>
-                  <Separator className="my-4" />
-                  <h3 className="text-sm font-medium text-muted-foreground mb-4">CURATOR</h3>
-                  
-                  <Link 
-                    to="/curator/upload" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/curator/upload') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Upload className="h-4 w-4" />
-                    <span>Upload Art</span>
-                  </Link>
+                    <Link 
+                      to="/profile/edit" 
+                      onClick={handleItemClick}
+                      className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                    >
+                      <Edit3 className="h-5 w-5" />
+                      <span>Edit Profile</span>
+                    </Link>
 
-                  <Link 
-                    to="/curator/dashboard" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/curator/dashboard') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <MessageSquare className="h-4 w-4" />
-                    <span>Dashboard</span>
-                  </Link>
-                </>
-              )}
+                    <Link 
+                      to="/change-password" 
+                      onClick={handleItemClick}
+                      className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                    >
+                      <Lock className="h-5 w-5" />
+                      <span>Change Password</span>
+                    </Link>
 
-              {/* Professor specific */}
-              {userRole === 'professor' && (
-                <>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-4">PROFESSOR</h3>
-                  
-                  <Link 
-                    to="/professor/dashboard" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/professor/dashboard') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <GraduationCap className="h-4 w-4" />
-                    <span>Professor Dashboard</span>
-                  </Link>
+                    <Link 
+                      to="/watched-later" 
+                      onClick={handleItemClick}
+                      className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                    >
+                      <Heart className="h-5 w-5" />
+                      <span>Watched Later</span>
+                    </Link>
+                  </div>
+                </div>
 
-                  <Link 
-                    to="/professor/review" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/professor/review') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <CheckCircle className="h-4 w-4" />
-                    <span>Review Arts</span>
-                  </Link>
-                </>
-              )}
+                <Separator />
 
-              {/* Admin specific */}
-              {userRole === 'admin' && (
-                <>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-4">ADMIN</h3>
-                  
-                  <Link 
-                    to="/admin/dashboard" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/admin/dashboard') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Settings className="h-4 w-4" />
-                    <span>Admin Dashboard</span>
-                  </Link>
+                {/* Role-specific sections */}
+                {userRole === 'admin' && (
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">ADMIN</h3>
+                    
+                    <div className="space-y-1">
+                      <Link 
+                        to="/admin/users" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Users className="h-5 w-5" />
+                        <span>Manage Users</span>
+                      </Link>
 
-                  <Link 
-                    to="/admin/users" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/admin/users') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Users className="h-4 w-4" />
-                    <span>Manage Users</span>
-                  </Link>
+                      <Link 
+                        to="/admin/arts" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <CheckCircle className="h-5 w-5" />
+                        <span>Review Arts</span>
+                      </Link>
 
-                  <Link 
-                    to="/admin/arts" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/admin/arts') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <CheckCircle className="h-4 w-4" />
-                    <span>Review Arts</span>
-                  </Link>
+                      <Link 
+                        to="/admin/categories" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Image className="h-5 w-5" />
+                        <span>Categories</span>
+                      </Link>
 
-                  <Link 
-                    to="/admin/categories" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/admin/categories') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <Image className="h-4 w-4" />
-                    <span>Categories</span>
-                  </Link>
+                      <Link 
+                        to="/admin/reports" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <BarChart className="h-5 w-5" />
+                        <span>Reports</span>
+                      </Link>
+                    </div>
+                  </div>
+                )}
 
-                  <Link 
-                    to="/admin/reports" 
-                    onClick={handleItemClick}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive('/admin/reports') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-                    }`}
-                  >
-                    <BarChart className="h-4 w-4" />
-                    <span>Reports</span>
-                  </Link>
-                </>
-              )}
+                {userRole === 'curator' && (
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">CURATOR</h3>
+                    
+                    <div className="space-y-1">
+                      <Link 
+                        to="/curator/upload" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Upload className="h-5 w-5" />
+                        <span>Upload Art</span>
+                      </Link>
+
+                      <Link 
+                        to="/curator/dashboard" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <MessageSquare className="h-5 w-5" />
+                        <span>Dashboard</span>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {userRole === 'professor' && (
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">PROFESSOR</h3>
+                    
+                    <div className="space-y-1">
+                      <Link 
+                        to="/professor/review" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <CheckCircle className="h-5 w-5" />
+                        <span>Review Arts</span>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {/* Logout */}
           {isAuthenticated && (
-            <>
+            <div className="mt-auto">
               <Separator />
-              <div className="p-6">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+              <div className="px-6 py-4">
+                <button
                   onClick={() => {
                     // Handle logout
                     handleItemClick();
                   }}
+                  className="flex items-center space-x-3 px-0 py-3 text-destructive hover:text-destructive/80 transition-colors w-full"
                 >
-                  <LogOut className="h-4 w-4 mr-3" />
-                  Logout
-                </Button>
+                  <LogOut className="h-5 w-5" />
+                  <span>Logout</span>
+                </button>
               </div>
-            </>
+            </div>
           )}
 
           {/* Sign in prompt for non-authenticated users */}

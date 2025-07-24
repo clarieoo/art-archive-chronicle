@@ -19,6 +19,8 @@ import ManageUsers from "./pages/admin/ManageUsers";
 import ReviewArts from "./pages/admin/ReviewArts";
 import Categories from "./pages/admin/Categories";
 import Reports from "./pages/admin/Reports";
+import { UploadArt } from "./pages/curator/UploadArt";
+import { ReviewArts as ProfessorReviewArts } from "./pages/professor/ReviewArts";
 
 const queryClient = new QueryClient();
 
@@ -51,11 +53,13 @@ const App = () => (
           {/* Curator Dashboard Routes */}
           <Route path="/curator" element={<DashboardLayout userRole="curator" />}>
             <Route index element={<CuratorDashboard />} />
+            <Route path="upload" element={<UploadArt />} />
           </Route>
 
           {/* Professor Dashboard Routes */}
           <Route path="/professor" element={<DashboardLayout userRole="professor" />}>
             <Route index element={<ProfessorDashboard />} />
+            <Route path="review" element={<ProfessorReviewArts />} />
           </Route>
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
