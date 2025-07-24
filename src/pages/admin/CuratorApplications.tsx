@@ -48,7 +48,7 @@ export default function CuratorApplications() {
         <Button 
           variant="ghost" 
           size="sm" 
-          onClick={() => navigate('/admin')}
+          onClick={() => navigate(-1)}
           className="hover:bg-muted"
         >
           <ArrowLeft className="h-4 w-4" />

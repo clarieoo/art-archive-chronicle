@@ -191,7 +191,7 @@ export default function ChangePassword() {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => navigate('/profile')}
+                    onClick={() => navigate(-1)}
                     className="flex-1"
                   >
                     Cancel

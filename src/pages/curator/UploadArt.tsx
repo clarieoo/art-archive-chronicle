@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, Upload, Image as ImageIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export const UploadArt = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -171,8 +172,12 @@ export const UploadArt = () => {
                     <Upload className="h-4 w-4 mr-2" />
                     Upload Art
                   </Button>
-                  <Button type="button" variant="outline" asChild>
-                    <Link to="/curator/dashboard">Cancel</Link>
+                  <Button 
+                    type="button" 
+                    variant="outline"
+                    onClick={() => navigate(-1)}
+                  >
+                    Cancel
                   </Button>
                 </div>
               </form>
