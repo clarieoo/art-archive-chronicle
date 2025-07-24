@@ -7,16 +7,16 @@ import { GalleryGrid } from '@/components/gallery/GalleryGrid';
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
 
   const categories = [
-    'All Categories',
-    'Renaissance',
-    'Medieval',
-    'Baroque',
-    'Classical',
-    'Gothic',
-    'Roman'
+    { label: 'All Categories', value: 'all' },
+    { label: 'Renaissance', value: 'Renaissance' },
+    { label: 'Medieval', value: 'Medieval' },
+    { label: 'Baroque', value: 'Baroque' },
+    { label: 'Classical', value: 'Classical' },
+    { label: 'Gothic', value: 'Gothic' },
+    { label: 'Roman', value: 'Roman' }
   ];
 
   return (
@@ -55,10 +55,10 @@ export default function Gallery() {
                 <SelectContent>
                   {categories.map((category) => (
                     <SelectItem 
-                      key={category} 
-                      value={category === 'All Categories' ? '' : category}
+                      key={category.value} 
+                      value={category.value}
                     >
-                      {category}
+                      {category.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -66,12 +66,12 @@ export default function Gallery() {
             </div>
 
             {/* Clear Filters */}
-            {(searchQuery || categoryFilter) && (
+            {(searchQuery || categoryFilter !== 'all') && (
               <Button
                 variant="outline"
                 onClick={() => {
                   setSearchQuery('');
-                  setCategoryFilter('');
+                  setCategoryFilter('all');
                 }}
               >
                 Clear Filters
@@ -81,7 +81,7 @@ export default function Gallery() {
         </div>
 
         {/* Gallery Grid */}
-        <GalleryGrid searchQuery={searchQuery} categoryFilter={categoryFilter} />
+        <GalleryGrid searchQuery={searchQuery} categoryFilter={categoryFilter === 'all' ? '' : categoryFilter} />
       </div>
     </div>
   );
