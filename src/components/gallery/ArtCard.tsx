@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Star, Heart, HeartIcon } from 'lucide-react';
+import { Star, Bookmark } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 interface ArtCardProps {
   id: string;
@@ -50,11 +49,35 @@ export const ArtCard = ({
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         
-        {/* Overlay with actions */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="text-center space-y-4">
+        {/* Bookmark icon in top right */}
+        <button
+          onClick={handleWatchLaterToggle}
+          className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-lg transition-all duration-200 shadow-sm"
+        >
+          <Bookmark
+            className={`w-4 h-4 ${
+              isWatchLater ? 'fill-primary text-primary' : 'text-muted-foreground'
+            }`}
+          />
+        </button>
+      </div>
+
+      <CardContent className="p-4 space-y-3">
+        <h3 className="font-semibold text-lg text-foreground line-clamp-2">
+          {title}
+        </h3>
+        <p className="text-muted-foreground text-sm">
+          by {artist} • {period}
+        </p>
+        <p className="text-sm text-muted-foreground">
+          A magnificent piece from the {period.toLowerCase()} period showcasing the artistic mastery of the era.
+        </p>
+
+        {/* Rating Section */}
+        <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center space-x-2">
             {/* Rating Stars */}
-            <div className="flex justify-center space-x-1">
+            <div className="flex items-center space-x-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
@@ -64,66 +87,27 @@ export const ArtCard = ({
                   className="transition-transform hover:scale-110"
                 >
                   <Star
-                    className={`w-6 h-6 ${
+                    className={`w-4 h-4 ${
                       star <= (hoveredStar || userRating)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-white/60'
+                        ? 'fill-amber-400 text-amber-400'
+                        : 'text-muted-foreground/40'
                     }`}
                   />
                 </button>
               ))}
             </div>
-
-            {/* Watch Later Button */}
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleWatchLaterToggle}
-              className="bg-white/20 border-white/30 text-white hover:bg-white/30"
-            >
-              {isWatchLater ? (
-                <HeartIcon className="w-4 h-4 mr-2 fill-red-500 text-red-500" />
-              ) : (
-                <Heart className="w-4 h-4 mr-2" />
-              )}
-              {isWatchLater ? 'Saved' : 'Save for Later'}
-            </Button>
+            <span className="text-sm text-muted-foreground">Rate this</span>
           </div>
-        </div>
-
-        {/* Period Badge */}
-        <Badge className="absolute top-3 left-3 bg-primary/90 text-primary-foreground">
-          {period}
-        </Badge>
-      </div>
-
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-lg text-foreground mb-1 line-clamp-2">
-          {title}
-        </h3>
-        <p className="text-muted-foreground mb-3">
-          by {artist}
-        </p>
-
-        {/* Rating Display */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-1">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  className={`w-4 h-4 ${
-                    star <= Math.round(rating)
-                      ? 'fill-yellow-400 text-yellow-400'
-                      : 'text-muted-foreground'
-                  }`}
-                />
-              ))}
-            </div>
-            <span className="text-sm text-muted-foreground">
-              {rating.toFixed(1)} ({totalRatings})
-            </span>
-          </div>
+          
+          {/* Save Button */}
+          <Button
+            variant={isWatchLater ? "default" : "outline"}
+            size="sm"
+            onClick={handleWatchLaterToggle}
+            className="h-8 px-3 text-xs"
+          >
+            {isWatchLater ? 'Saved' : 'Save'}
+          </Button>
         </div>
       </CardContent>
     </Card>

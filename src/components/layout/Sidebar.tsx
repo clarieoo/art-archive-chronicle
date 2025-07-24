@@ -77,60 +77,24 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
             </Button>
           </div>
 
-          {/* Navigation Links */}
-          <div className="p-6 space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground mb-4">NAVIGATION</h3>
-            
-            <Link 
-              to="/" 
-              onClick={handleItemClick}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                isActive('/') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-              }`}
-            >
-              <Home className="h-4 w-4" />
-              <span>Home</span>
-            </Link>
-
-            <Link 
-              to="/gallery" 
-              onClick={handleItemClick}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                isActive('/gallery') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-              }`}
-            >
-              <Image className="h-4 w-4" />
-              <span>Gallery</span>
-            </Link>
-
-            <Link 
-              to="/about" 
-              onClick={handleItemClick}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                isActive('/about') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-              }`}
-            >
-              <Info className="h-4 w-4" />
-              <span>About</span>
-            </Link>
-
-            <Link 
-              to="/contact" 
-              onClick={handleItemClick}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                isActive('/contact') ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
-              }`}
-            >
-              <Mail className="h-4 w-4" />
-              <span>Contact</span>
-            </Link>
-          </div>
-
-          <Separator />
+          {/* Account Info */}
+          {isAuthenticated && (
+            <div className="p-6 space-y-4">
+              <div className="flex items-center space-x-3 p-3 bg-surface/50 rounded-lg">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <User className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">John Doe</p>
+                  <p className="text-sm text-muted-foreground capitalize">{userRole}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* User-specific sections */}
           {isAuthenticated && (
-            <div className="p-6 space-y-2 flex-1">
+            <div className="px-6 space-y-2 flex-1">
               {/* Visitor/Curator sections */}
               {(userRole === 'visitor' || userRole === 'curator') && (
                 <>
