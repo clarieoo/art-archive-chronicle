@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, CheckCircle, X, Clock, Eye } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +22,7 @@ interface ArtSubmission {
 }
 
 export const ReviewArts = () => {
+  const navigate = useNavigate();
   const [selectedArt, setSelectedArt] = useState<ArtSubmission | null>(null);
   const [comment, setComment] = useState('');
 
@@ -216,11 +217,13 @@ export const ReviewArts = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with back button */}
         <div className="flex items-center gap-4 mb-8">
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/professor/dashboard">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Link>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => navigate('/professor/dashboard')}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
           </Button>
           <h1 className="text-3xl font-bold text-foreground">Review Art Submissions</h1>
         </div>

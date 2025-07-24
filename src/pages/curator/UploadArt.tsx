@@ -43,11 +43,13 @@ export const UploadArt = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with back button */}
         <div className="flex items-center gap-4 mb-8">
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/curator/dashboard">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Link>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => navigate('/curator/dashboard')}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
           </Button>
           <h1 className="text-3xl font-bold text-foreground">Upload New Art</h1>
         </div>

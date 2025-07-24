@@ -188,35 +188,6 @@ export default function ProfessorDashboard() {
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks and navigation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Link to="/professor/review">
-                <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
-                  <Clock className="h-6 w-6" />
-                  Review Queue
-                </Button>
-              </Link>
-              <Link to="/professor/approved">
-                <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
-                  <CheckCircle className="h-6 w-6" />
-                  Approved Arts
-                </Button>
-              </Link>
-              <Link to="/professor/reports">
-                <Button variant="outline" className="w-full h-20 flex flex-col gap-2">
-                  <MessageSquare className="h-6 w-6" />
-                  Review Reports
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
