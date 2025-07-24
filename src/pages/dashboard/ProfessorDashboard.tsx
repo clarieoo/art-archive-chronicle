@@ -1,10 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, Clock, Eye, MessageSquare } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CheckCircle, XCircle, Clock, Eye, MessageSquare, ArrowLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ProfessorDashboard() {
+  const navigate = useNavigate();
   const pendingArtworks = [
     { 
       id: 1, 
@@ -48,6 +49,16 @@ export default function ProfessorDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-surface/50 to-background p-6">
       <div className="max-w-7xl mx-auto">
+        {/* Back Arrow */}
+        <Button
+          variant="ghost"
+          onClick={() => navigate(-1)}
+          className="mb-6 hover:bg-muted"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back
+        </Button>
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-primary mb-2">Professor Dashboard</h1>
