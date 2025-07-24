@@ -126,14 +126,16 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       <span>Change Password</span>
                     </Link>
 
-                    <Link 
-                      to="/watched-later" 
-                      onClick={handleItemClick}
-                      className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                    >
-                      <Heart className="h-5 w-5" />
-                      <span>Watched Later</span>
-                    </Link>
+                    {userRole !== 'admin' && (
+                      <Link 
+                        to="/watched-later" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Heart className="h-5 w-5" />
+                        <span>Watched Later</span>
+                      </Link>
+                    )}
                   </div>
                 </div>
 
@@ -145,33 +147,6 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                     <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">VISITOR FUNCTIONS</h3>
                     
                     <div className="space-y-1">
-                      <Link 
-                        to="/gallery" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <Settings className="h-5 w-5" />
-                        <span>Search Artifacts</span>
-                      </Link>
-
-                      <Link 
-                        to="/gallery" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <Image className="h-5 w-5" />
-                        <span>View Artifacts</span>
-                      </Link>
-
-                      <Link 
-                        to="/watched-later" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <Heart className="h-5 w-5" />
-                        <span>Rate/Save Artifacts</span>
-                      </Link>
-
                       <Link 
                         to="/upgrade-curator" 
                         onClick={handleItemClick}
@@ -249,15 +224,6 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       >
                         <Upload className="h-5 w-5" />
                         <span>Upload Art</span>
-                      </Link>
-
-                      <Link 
-                        to="/curator/dashboard" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <MessageSquare className="h-5 w-5" />
-                        <span>Dashboard</span>
                       </Link>
                     </div>
                   </div>

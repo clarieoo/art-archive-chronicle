@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, User, Star, Heart } from 'lucide-react';
+import { Menu, User, Star, Heart, Search, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import logo from '@/assets/logo.jpg';
@@ -29,41 +29,61 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
             </div>
           </Link>
 
-          {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/home"
-              className={`font-medium transition-colors hover:text-primary ${
-                isActive('/home') ? 'text-primary' : 'text-muted-foreground'
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/gallery"
-              className={`font-medium transition-colors hover:text-primary ${
-                isActive('/gallery') ? 'text-primary' : 'text-muted-foreground'
-              }`}
-            >
-              Gallery
-            </Link>
-            <Link
-              to="/about"
-              className={`font-medium transition-colors hover:text-primary ${
-                isActive('/about') ? 'text-primary' : 'text-muted-foreground'
-              }`}
-            >
-              About
-            </Link>
-            <Link
-              to="/contact"
-              className={`font-medium transition-colors hover:text-primary ${
-                isActive('/contact') ? 'text-primary' : 'text-muted-foreground'
-              }`}
-            >
-              Contact
-            </Link>
-          </div>
+          {/* Navigation Links - Desktop (only for non-dashboard) */}
+          {!isAuthenticated && (
+            <div className="hidden md:flex items-center space-x-8">
+              <Link
+                to="/home"
+                className={`font-medium transition-colors hover:text-primary ${
+                  isActive('/home') ? 'text-primary' : 'text-muted-foreground'
+                }`}
+              >
+                Home
+              </Link>
+              <Link
+                to="/gallery"
+                className={`font-medium transition-colors hover:text-primary ${
+                  isActive('/gallery') ? 'text-primary' : 'text-muted-foreground'
+                }`}
+              >
+                Gallery
+              </Link>
+              <Link
+                to="/about"
+                className={`font-medium transition-colors hover:text-primary ${
+                  isActive('/about') ? 'text-primary' : 'text-muted-foreground'
+                }`}
+              >
+                About
+              </Link>
+              <Link
+                to="/contact"
+                className={`font-medium transition-colors hover:text-primary ${
+                  isActive('/contact') ? 'text-primary' : 'text-muted-foreground'
+                }`}
+              >
+                Contact
+              </Link>
+            </div>
+          )}
+
+          {/* Search Box and Notifications for dashboards */}
+          {isAuthenticated && (userRole === 'admin' || userRole === 'curator' || userRole === 'professor') && (
+            <div className="hidden md:flex items-center space-x-4">
+              <div className="relative">
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  className="pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary w-64"
+                />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              </div>
+              <Button variant="ghost" size="sm" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
+              </Button>
+            </div>
+          )}
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
