@@ -4,8 +4,14 @@ import { Button } from '@/components/ui/button';
 const Index = () => {
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background with museum/gallery aesthetic */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brown-dark via-brown-medium to-brown-light opacity-90"></div>
+      {/* Background with museum/gallery aesthetic and background image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1554907984-15263bfd63bd?q=80&w=2070&auto=format&fit=crop')`
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-brown-dark/90 via-brown-medium/80 to-brown-light/90"></div>
       
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
         <h1 className="text-5xl md:text-7xl font-bold text-warm-white mb-8 leading-tight">
@@ -18,7 +24,7 @@ const Index = () => {
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <Button size="lg" asChild className="bg-brown-medium hover:bg-brown-medium/90 text-warm-white border-0 px-8 py-4 text-lg">
-            <Link to="/gallery">
+            <Link to="/home">
               Explore Gallery
             </Link>
           </Button>
