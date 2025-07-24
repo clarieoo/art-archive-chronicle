@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Star, Users, Image as ImageIcon } from 'lucide-react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Footer } from '@/components/layout/Footer';
 import sampleArt1 from '@/assets/sample-art-1.jpg';
 import sampleArt2 from '@/assets/sample-art-2.jpg';
 import sampleArt3 from '@/assets/sample-art-3.jpg';
@@ -197,6 +198,7 @@ const VisitorPage = () => {
           </div>
         </section>
       </div>
+      <Footer />
     </DashboardLayout>
   );
 };
