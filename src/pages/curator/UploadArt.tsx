@@ -46,7 +46,7 @@ export const UploadArt = () => {
           <Button 
             variant="outline" 
             size="sm"
-            onClick={() => navigate('/curator/dashboard')}
+            onClick={() => navigate('/curator')}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard

@@ -1,10 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Upload, MessageSquare, Image, PlusCircle, Clock, CheckCircle, ArrowLeft } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Upload, MessageSquare, Image, PlusCircle, Clock, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function CuratorDashboard() {
-  const navigate = useNavigate();
   const myArtworks = [
     { id: 1, title: "Renaissance Portrait", status: "approved", date: "2024-01-15" },
     { id: 2, title: "Medieval Manuscript", status: "pending", date: "2024-01-20" },
@@ -19,16 +18,6 @@ export default function CuratorDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-surface/50 to-background p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Back Arrow */}
-        <Button
-          variant="ghost"
-          onClick={() => navigate(-1)}
-          className="mb-6 hover:bg-muted"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
-
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-primary mb-2">Curator Dashboard</h1>
