@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { LogoutDialog } from '@/components/LogoutDialog';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ interface SidebarProps {
 export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated = false }: SidebarProps) => {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -234,10 +236,7 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
               <Separator />
               <div className="px-6 py-4">
                 <button
-                  onClick={() => {
-                    // Handle logout
-                    handleItemClick();
-                  }}
+                  onClick={() => setLogoutDialogOpen(true)}
                   className="flex items-center space-x-3 px-0 py-3 text-destructive hover:text-destructive/80 transition-colors w-full"
                 >
                   <LogOut className="h-5 w-5" />
@@ -266,6 +265,18 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
           )}
         </div>
       </div>
+      
+      {/* Logout Dialog */}
+      <LogoutDialog
+        open={logoutDialogOpen}
+        onOpenChange={setLogoutDialogOpen}
+        onConfirm={() => {
+          // Handle logout logic here
+          console.log('User logged out');
+          setLogoutDialogOpen(false);
+          onClose();
+        }}
+      />
     </>
   );
 };

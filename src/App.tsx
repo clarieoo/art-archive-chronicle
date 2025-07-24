@@ -5,12 +5,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
+import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
+import ChangePassword from "./pages/auth/ChangePassword";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ViewProfile from "./pages/profile/ViewProfile";
+import EditProfile from "./pages/profile/EditProfile";
+import UpgradeCurator from "./pages/UpgradeCurator";
+import WatchedLater from "./pages/WatchedLater";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import CuratorDashboard from "./pages/dashboard/CuratorDashboard";
@@ -33,12 +40,19 @@ const App = () => (
         <Routes>
           {/* Main Website Routes */}
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+            <Route index element={<Index />} />
+            <Route path="home" element={<Home />} />
             <Route path="gallery" element={<Gallery />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="signup" element={<SignUp />} />
+            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="profile" element={<ViewProfile />} />
+            <Route path="profile/edit" element={<EditProfile />} />
+            <Route path="upgrade-curator" element={<UpgradeCurator />} />
+            <Route path="watched-later" element={<WatchedLater />} />
           </Route>
 
           {/* Admin Dashboard Routes */}
