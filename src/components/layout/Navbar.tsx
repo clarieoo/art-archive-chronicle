@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import logo from '@/assets/logo.jpg';
 
 interface NavbarProps {
-  onMenuClick: () => void;
+  onMenuClick?: () => void;
   isAuthenticated?: boolean;
   userRole?: 'visitor' | 'curator' | 'professor' | 'admin';
 }
@@ -101,15 +101,17 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
             )}
 
             {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onMenuClick}
-              className="flex items-center space-x-1"
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Open menu</span>
-            </Button>
+            {onMenuClick && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onMenuClick}
+                className="flex items-center space-x-1"
+              >
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
