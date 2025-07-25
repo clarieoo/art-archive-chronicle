@@ -67,8 +67,8 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
             </div>
           )}
 
-          {/* Search Box and Notifications for dashboards */}
-          {isAuthenticated && (userRole === 'admin' || userRole === 'curator' || userRole === 'professor') && (
+          {/* Search Box and Notifications for dashboards and visitors */}
+          {isAuthenticated && (
             <div className="hidden md:flex items-center space-x-4">
               <div className="relative">
                 <input 

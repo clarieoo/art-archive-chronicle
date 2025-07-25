@@ -183,18 +183,6 @@ export default function SignIn() {
           </CardContent>
         </Card>
 
-        {/* Demo Accounts Info */}
-        <Card className="bg-muted/50">
-          <CardContent className="p-4">
-            <h3 className="font-medium text-sm text-foreground mb-2">Demo Accounts</h3>
-            <div className="text-xs text-muted-foreground space-y-1">
-              <p><strong>Visitor:</strong> visitor@demo.com / password</p>
-              <p><strong>Curator:</strong> curator@demo.com / password</p>
-              <p><strong>Professor:</strong> professor@demo.com / password</p>
-              <p><strong>Admin:</strong> admin@demo.com / password</p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
