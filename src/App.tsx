@@ -57,8 +57,10 @@ const App = () => (
             <Route path="upgrade-curator" element={<UpgradeCurator />} />
             <Route path="watched-later" element={<WatchedLater />} />
             <Route path="visitor" element={<VisitorPage />} />
-            <Route path="notifications" element={<Notifications />} />
           </Route>
+
+          {/* Notifications Route - Outside main Layout to avoid navbar duplication */}
+          <Route path="/notifications" element={<Notifications />} />
 
           {/* Admin Dashboard Routes */}
           <Route path="/admin" element={<DashboardLayout userRole="admin" />}>
