@@ -111,49 +111,12 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="relative">
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-96" align="end">
-                  <div className="p-4 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-foreground">Notifications</h3>
-                      <Badge variant="secondary">{notifications.length}</Badge>
-                    </div>
-                    <div className="space-y-3">
-                      {notifications.map((notification) => (
-                        <div key={notification.id} className="border-b border-border pb-3 last:border-b-0">
-                          <div className="space-y-2">
-                            <p className="text-sm text-foreground">{notification.description}</p>
-                            <div className="flex items-center justify-between text-xs text-muted-foreground">
-                              <div className="flex items-center space-x-1">
-                                <Clock className="h-3 w-3" />
-                                <span>{notification.time}</span>
-                              </div>
-                              <span>From: {notification.from}</span>
-                            </div>
-                            <Link 
-                              to={notification.visitLink}
-                              className="inline-flex items-center space-x-1 text-xs text-primary hover:underline"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              <span>Visit</span>
-                            </Link>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <DropdownMenuSeparator />
-                    <Button variant="ghost" size="sm" className="w-full text-xs">
-                      Mark all as read
-                    </Button>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Button variant="ghost" size="sm" className="relative" asChild>
+                <Link to="/notifications">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
+                </Link>
+              </Button>
             </div>
           )}
 
