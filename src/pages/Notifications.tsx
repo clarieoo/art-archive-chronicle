@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ export const Notifications = () => {
   const navigate = useNavigate();
   
   // Mock notifications data with more detailed time
-  const notifications: Notification[] = [
+  const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: 1,
       time: '2 hours 15 minutes ago',
@@ -58,9 +59,16 @@ export const Notifications = () => {
       from: 'System',
       isRead: true
     }
-  ];
+  ]);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
+
+  const handleReadAll = () => {
+    setNotifications(notifications.map(notification => ({
+      ...notification,
+      isRead: true
+    })));
+  };
 
   return (
     <DashboardLayout userRole="curator">
@@ -85,7 +93,7 @@ export const Notifications = () => {
                 <Badge variant="default" className="text-sm">
                   {unreadCount} Unread
                 </Badge>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleReadAll}>
                   Read All
                 </Button>
               </>
