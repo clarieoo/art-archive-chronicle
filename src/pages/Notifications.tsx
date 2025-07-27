@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -20,6 +22,8 @@ interface Notification {
 }
 
 export const Notifications = () => {
+  const navigate = useNavigate();
+  
   // Mock notifications data with more detailed time
   const notifications: Notification[] = [
     {
@@ -62,14 +66,31 @@ export const Notifications = () => {
     <DashboardLayout userRole="curator">
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-foreground">
-            Notifications ({notifications.length})
-          </h1>
-          {unreadCount > 0 && (
-            <Badge variant="default" className="text-sm">
-              {unreadCount} Unread
-            </Badge>
-          )}
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="hover:bg-accent"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-3xl font-bold text-foreground">
+              Notifications ({notifications.length})
+            </h1>
+          </div>
+          <div className="flex items-center gap-2">
+            {unreadCount > 0 && (
+              <>
+                <Badge variant="default" className="text-sm">
+                  {unreadCount} Unread
+                </Badge>
+                <Button variant="outline" size="sm">
+                  Read All
+                </Button>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="bg-card rounded-lg border shadow-sm">
