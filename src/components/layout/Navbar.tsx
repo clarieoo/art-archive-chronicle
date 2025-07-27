@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { useNotifications } from '@/hooks/useNotifications';
+import { useNotifications } from '@/contexts/NotificationContext';
 import logo from '@/assets/logo.jpg';
 
 interface NavbarProps {

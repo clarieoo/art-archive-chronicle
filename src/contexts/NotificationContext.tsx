@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 export interface Notification {
   id: number;
@@ -8,6 +8,15 @@ export interface Notification {
   from: string;
   isRead: boolean;
 }
+
+interface NotificationContextType {
+  notifications: Notification[];
+  unreadCount: number;
+  markAllAsRead: () => void;
+  markAsRead: (id: number) => void;
+}
+
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 const mockNotifications: Notification[] = [
   {
@@ -44,7 +53,7 @@ const mockNotifications: Notification[] = [
   }
 ];
 
-export const useNotifications = () => {
+export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
@@ -64,10 +73,22 @@ export const useNotifications = () => {
     ));
   };
 
-  return {
-    notifications,
-    unreadCount,
-    markAllAsRead,
-    markAsRead
-  };
+  return (
+    <NotificationContext.Provider value={{
+      notifications,
+      unreadCount,
+      markAllAsRead,
+      markAsRead
+    }}>
+      {children}
+    </NotificationContext.Provider>
+  );
+};
+
+export const useNotifications = () => {
+  const context = useContext(NotificationContext);
+  if (context === undefined) {
+    throw new Error('useNotifications must be used within a NotificationProvider');
+  }
+  return context;
 };

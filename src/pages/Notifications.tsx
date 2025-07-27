@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { useNotifications } from '@/hooks/useNotifications';
+import { useNotifications } from '@/contexts/NotificationContext';
 import {
   Table,
   TableBody,
