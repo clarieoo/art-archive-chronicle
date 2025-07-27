@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, User, Star, Heart, Search, Bell, Clock, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import logo from '@/assets/logo.jpg';
 
@@ -105,15 +105,15 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
-              <Popover>
-                <PopoverTrigger asChild>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="relative">
                     <Bell className="h-5 w-5" />
                     <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-96" align="end">
-                  <div className="space-y-4">
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-96" align="end">
+                  <div className="p-4 space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-foreground">Notifications</h3>
                       <Badge variant="secondary">{notifications.length}</Badge>
@@ -141,14 +141,13 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
                         </div>
                       ))}
                     </div>
-                    <div className="pt-2 border-t border-border">
-                      <Button variant="ghost" size="sm" className="w-full text-xs">
-                        Mark all as read
-                      </Button>
-                    </div>
+                    <DropdownMenuSeparator />
+                    <Button variant="ghost" size="sm" className="w-full text-xs">
+                      Mark all as read
+                    </Button>
                   </div>
-                </PopoverContent>
-              </Popover>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
 
