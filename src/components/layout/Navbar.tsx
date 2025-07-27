@@ -14,7 +14,13 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visitor' }: NavbarProps) => {
-  const location = useLocation();
+  let location;
+  try {
+    location = useLocation();
+  } catch {
+    // Handle case when component is used outside Router context
+    location = { pathname: '/' };
+  }
   
   const isActive = (path: string) => location.pathname === path;
 
