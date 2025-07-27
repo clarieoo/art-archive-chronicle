@@ -1,6 +1,4 @@
-import { ArrowLeft, ExternalLink } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -10,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 interface Notification {
   id: number;
@@ -21,13 +20,11 @@ interface Notification {
 }
 
 export const Notifications = () => {
-  const navigate = useNavigate();
-
-  // Mock notifications data
+  // Mock notifications data with more detailed time
   const notifications: Notification[] = [
     {
       id: 1,
-      time: '2 hours ago',
+      time: '2 hours 15 minutes ago',
       description: 'Your artwork "Sunset Valley" has been approved',
       visitLink: '/gallery/artwork/123',
       from: 'Admin Review Team',
@@ -35,7 +32,7 @@ export const Notifications = () => {
     },
     {
       id: 2,
-      time: '1 day ago',
+      time: '1 day 5 minutes ago',
       description: 'New comment on your artwork submission',
       visitLink: '/dashboard/submissions',
       from: 'Professor Johnson',
@@ -43,7 +40,7 @@ export const Notifications = () => {
     },
     {
       id: 3,
-      time: '3 days ago',
+      time: '3 days 45 minutes ago',
       description: 'Your curator application is under review',
       visitLink: '/upgrade-curator',
       from: 'System Administrator',
@@ -51,7 +48,7 @@ export const Notifications = () => {
     },
     {
       id: 4,
-      time: '1 week ago',
+      time: '1 week 2 days ago',
       description: 'Welcome to the Historical Archive platform',
       visitLink: '/dashboard',
       from: 'System',
@@ -59,24 +56,20 @@ export const Notifications = () => {
     }
   ];
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
+  const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div className="min-h-screen bg-background">
+    <DashboardLayout userRole="curator">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center space-x-4 mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleGoBack}
-            className="flex items-center space-x-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back</span>
-          </Button>
-          <h1 className="text-3xl font-bold text-foreground">Notifications</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-foreground">
+            Notifications ({notifications.length})
+          </h1>
+          {unreadCount > 0 && (
+            <Badge variant="default" className="text-sm">
+              {unreadCount} Unread
+            </Badge>
+          )}
         </div>
 
         <div className="bg-card rounded-lg border shadow-sm">
@@ -87,33 +80,36 @@ export const Notifications = () => {
                 <TableHead>Time</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead>From</TableHead>
-                <TableHead>Visit Link</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {notifications.map((notification) => (
-                <TableRow key={notification.id}>
+                <TableRow 
+                  key={notification.id}
+                  className={notification.isRead ? 'opacity-60' : 'bg-muted/30'}
+                >
                   <TableCell>
                     <Badge variant={notification.isRead ? "secondary" : "default"}>
                       {notification.isRead ? "Read" : "Unread"}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="text-muted-foreground text-sm">
                     {notification.time}
                   </TableCell>
                   <TableCell className="max-w-md">
-                    <p className="text-foreground">{notification.description}</p>
+                    <Link 
+                      to={notification.visitLink}
+                      className={`hover:underline transition-colors ${
+                        notification.isRead 
+                          ? 'text-muted-foreground hover:text-foreground' 
+                          : 'text-foreground font-medium hover:text-primary'
+                      }`}
+                    >
+                      {notification.description}
+                    </Link>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {notification.from}
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link to={notification.visitLink} className="flex items-center space-x-1">
-                        <span>Visit</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </Link>
-                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -127,6 +123,6 @@ export const Notifications = () => {
           </div>
         )}
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
