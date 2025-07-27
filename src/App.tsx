@@ -30,6 +30,7 @@ import CuratorApplications from "./pages/admin/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
 import { ReviewArts as ProfessorReviewArts } from "./pages/professor/ReviewArts";
 import VisitorPage from "./pages/visitor/VisitorPage";
+import { Notifications } from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="upgrade-curator" element={<UpgradeCurator />} />
             <Route path="watched-later" element={<WatchedLater />} />
             <Route path="visitor" element={<VisitorPage />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
 
           {/* Admin Dashboard Routes */}
