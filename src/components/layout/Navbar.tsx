@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { useNotifications } from '@/hooks/useNotifications';
 import logo from '@/assets/logo.jpg';
 
 interface NavbarProps {
@@ -14,6 +15,8 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visitor' }: NavbarProps) => {
+  const { unreadCount } = useNotifications();
+  
   let location;
   try {
     location = useLocation();
@@ -23,31 +26,6 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
   }
   
   const isActive = (path: string) => location.pathname === path;
-
-  // Mock notifications data
-  const notifications = [
-    {
-      id: 1,
-      time: '2 hours ago',
-      description: 'Your artwork "Sunset Valley" has been approved',
-      visitLink: '/gallery/artwork/123',
-      from: 'Admin Review Team'
-    },
-    {
-      id: 2,
-      time: '1 day ago',
-      description: 'New comment on your artwork submission',
-      visitLink: '/dashboard/submissions',
-      from: 'Professor Johnson'
-    },
-    {
-      id: 3,
-      time: '3 days ago',
-      description: 'Your curator application is under review',
-      visitLink: '/upgrade-curator',
-      from: 'System Administrator'
-    }
-  ];
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-soft">
@@ -114,7 +92,9 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
               <Button variant="ghost" size="sm" className="relative" asChild>
                 <Link to="/notifications">
                   <Bell className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
+                  )}
                 </Link>
               </Button>
             </div>

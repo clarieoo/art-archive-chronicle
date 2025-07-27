@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import { useNotifications } from '@/hooks/useNotifications';
 import {
   Table,
   TableBody,
@@ -13,62 +13,9 @@ import {
 } from '@/components/ui/table';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
-interface Notification {
-  id: number;
-  time: string;
-  description: string;
-  visitLink: string;
-  from: string;
-  isRead: boolean;
-}
-
 export const Notifications = () => {
   const navigate = useNavigate();
-  
-  // Mock notifications data with more detailed time
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: 1,
-      time: '2 hours 15 minutes ago',
-      description: 'Your artwork "Sunset Valley" has been approved',
-      visitLink: '/gallery/artwork/123',
-      from: 'Admin Review Team',
-      isRead: false
-    },
-    {
-      id: 2,
-      time: '1 day 5 minutes ago',
-      description: 'New comment on your artwork submission',
-      visitLink: '/dashboard/submissions',
-      from: 'Professor Johnson',
-      isRead: false
-    },
-    {
-      id: 3,
-      time: '3 days 45 minutes ago',
-      description: 'Your curator application is under review',
-      visitLink: '/upgrade-curator',
-      from: 'System Administrator',
-      isRead: true
-    },
-    {
-      id: 4,
-      time: '1 week 2 days ago',
-      description: 'Welcome to the Historical Archive platform',
-      visitLink: '/dashboard',
-      from: 'System',
-      isRead: true
-    }
-  ]);
-
-  const unreadCount = notifications.filter(n => !n.isRead).length;
-
-  const handleReadAll = () => {
-    setNotifications(notifications.map(notification => ({
-      ...notification,
-      isRead: true
-    })));
-  };
+  const { notifications, unreadCount, markAllAsRead } = useNotifications();
 
   return (
     <DashboardLayout userRole="curator">
@@ -93,7 +40,7 @@ export const Notifications = () => {
                 <Badge variant="default" className="text-sm">
                   {unreadCount} Unread
                 </Badge>
-                <Button variant="outline" size="sm" onClick={handleReadAll}>
+                <Button variant="outline" size="sm" onClick={markAllAsRead}>
                   Read All
                 </Button>
               </>
