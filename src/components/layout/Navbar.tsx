@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, User, Star, Heart, Search, Bell } from 'lucide-react';
+import { Menu, User, Star, Heart, Search, Bell, Clock, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Badge } from '@/components/ui/badge';
 import logo from '@/assets/logo.jpg';
 
 interface NavbarProps {
@@ -15,6 +17,31 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
   const location = useLocation();
   
   const isActive = (path: string) => location.pathname === path;
+
+  // Mock notifications data
+  const notifications = [
+    {
+      id: 1,
+      time: '2 hours ago',
+      description: 'Your artwork "Sunset Valley" has been approved',
+      visitLink: '/gallery/artwork/123',
+      from: 'Admin Review Team'
+    },
+    {
+      id: 2,
+      time: '1 day ago',
+      description: 'New comment on your artwork submission',
+      visitLink: '/dashboard/submissions',
+      from: 'Professor Johnson'
+    },
+    {
+      id: 3,
+      time: '3 days ago',
+      description: 'Your curator application is under review',
+      visitLink: '/upgrade-curator',
+      from: 'System Administrator'
+    }
+  ];
 
   return (
     <nav className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-soft">
@@ -78,10 +105,50 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
-              <Button variant="ghost" size="sm" className="relative">
-                <Bell className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" size="sm" className="relative">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full text-xs"></span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-96" align="end">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-foreground">Notifications</h3>
+                      <Badge variant="secondary">{notifications.length}</Badge>
+                    </div>
+                    <div className="space-y-3">
+                      {notifications.map((notification) => (
+                        <div key={notification.id} className="border-b border-border pb-3 last:border-b-0">
+                          <div className="space-y-2">
+                            <p className="text-sm text-foreground">{notification.description}</p>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                              <div className="flex items-center space-x-1">
+                                <Clock className="h-3 w-3" />
+                                <span>{notification.time}</span>
+                              </div>
+                              <span>From: {notification.from}</span>
+                            </div>
+                            <Link 
+                              to={notification.visitLink}
+                              className="inline-flex items-center space-x-1 text-xs text-primary hover:underline"
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              <span>Visit</span>
+                            </Link>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pt-2 border-t border-border">
+                      <Button variant="ghost" size="sm" className="w-full text-xs">
+                        Mark all as read
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           )}
 
