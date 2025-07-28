@@ -142,17 +142,18 @@ export default function CuratorApplications() {
                             <p className="text-muted-foreground">{application.motivation}</p>
                           </div>
                           
-                          <div>
-                            <h4 className="font-semibold mb-2">Portfolio</h4>
-                            <a 
-                              href={application.portfolioLink} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-primary hover:underline"
-                            >
-                              {application.portfolioLink}
-                            </a>
-                          </div>
+                           <div>
+                             <h4 className="font-semibold mb-2">Portfolio</h4>
+                             <a 
+                               href={application.portfolioLink} 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               className="text-primary hover:underline"
+                             >
+                               {application.portfolioLink}
+                             </a>
+                             <p className="text-sm text-muted-foreground mt-1">(CV file uploaded)</p>
+                           </div>
 
                           <div>
                             <h4 className="font-semibold mb-2">Submitted Date</h4>

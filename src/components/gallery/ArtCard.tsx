@@ -122,12 +122,12 @@ export const ArtCard = ({
           <div className="flex items-center space-x-2">
             {/* View Details Button */}
             <Button
-              variant="ghost" 
+              variant="outline"
               size="sm"
               onClick={() => console.log(`View details for artwork ${id}`)}
-              className="h-8 w-8 p-0 hover:bg-accent"
+              className="h-8 px-3 text-xs"
             >
-              <Eye className="w-4 h-4" />
+              View
             </Button>
             
             {/* Comments Popover */}
