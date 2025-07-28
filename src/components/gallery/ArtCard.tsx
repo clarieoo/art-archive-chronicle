@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, Bookmark, MessageCircle, Heart, Reply, Eye } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,7 @@ export const ArtCard = ({
   onRate,
   onToggleWatchLater
 }: ArtCardProps) => {
+  const navigate = useNavigate();
   const [userRating, setUserRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [comments] = useState([
@@ -61,6 +63,10 @@ export const ArtCard = ({
 
   const handleWatchLaterToggle = () => {
     onToggleWatchLater?.(id);
+  };
+
+  const handleViewDetails = () => {
+    navigate(`/artwork/${id}`);
   };
 
   return (
@@ -124,7 +130,7 @@ export const ArtCard = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => console.log(`View details for artwork ${id}`)}
+              onClick={handleViewDetails}
               className="h-8 px-3 text-xs"
             >
               View

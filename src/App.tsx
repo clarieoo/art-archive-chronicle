@@ -8,6 +8,7 @@ import { DashboardLayout } from "./components/layout/DashboardLayout";
 import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
+import ArtworkDetail from "./pages/ArtworkDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import SignIn from "./pages/auth/SignIn";
@@ -47,6 +48,7 @@ const App = () => (
               <Route index element={<Index />} />
               <Route path="home" element={<Home />} />
               <Route path="gallery" element={<Gallery />} />
+              <Route path="artwork/:id" element={<ArtworkDetail />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="signin" element={<SignIn />} />
