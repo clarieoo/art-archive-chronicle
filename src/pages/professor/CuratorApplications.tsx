@@ -1,11 +1,15 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export default function CuratorApplications() {
   const navigate = useNavigate();
+  const [selectedApplication, setSelectedApplication] = useState<any>(null);
 
   // Mock data for curator applications
   const applications = [
@@ -63,78 +67,145 @@ export default function CuratorApplications() {
         </div>
       </div>
 
-      {/* Applications List */}
-      <div className="space-y-6">
-        {applications.map((application) => (
-          <Card key={application.id} className="w-full">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-xl">{application.fullName}</CardTitle>
-                  <p className="text-muted-foreground">{application.email}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Submitted: {new Date(application.submittedAt).toLocaleDateString()}
-                  </p>
-                </div>
-                <Badge 
-                  variant={
-                    application.status === 'approved' ? 'default' : 
-                    application.status === 'rejected' ? 'destructive' : 
-                    'secondary'
-                  }
-                >
-                  {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h4 className="font-semibold mb-2">Educational Background</h4>
-                <p className="text-muted-foreground">{application.education}</p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">Professional Experience</h4>
-                <p className="text-muted-foreground">{application.experience}</p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">Motivation</h4>
-                <p className="text-muted-foreground">{application.motivation}</p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">Portfolio</h4>
-                <a 
-                  href={application.portfolioLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  {application.portfolioLink}
-                </a>
-              </div>
+      {/* Applications Table */}
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Educational Background</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {applications.map((application) => (
+              <TableRow key={application.id}>
+                <TableCell className="font-medium">{application.fullName}</TableCell>
+                <TableCell>{application.email}</TableCell>
+                <TableCell className="max-w-xs truncate">{application.education}</TableCell>
+                <TableCell>{new Date(application.submittedAt).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  <Badge 
+                    variant={
+                      application.status === 'approved' ? 'default' : 
+                      application.status === 'rejected' ? 'destructive' : 
+                      'secondary'
+                    }
+                  >
+                    {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedApplication(application)}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          View Details
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>Application Details - {application.fullName}</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-6 py-4">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <h4 className="font-semibold mb-2">Full Name</h4>
+                              <p className="text-muted-foreground">{application.fullName}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold mb-2">Email</h4>
+                              <p className="text-muted-foreground">{application.email}</p>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-semibold mb-2">Educational Background</h4>
+                            <p className="text-muted-foreground">{application.education}</p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-semibold mb-2">Professional Experience</h4>
+                            <p className="text-muted-foreground">{application.experience}</p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-semibold mb-2">Motivation</h4>
+                            <p className="text-muted-foreground">{application.motivation}</p>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-semibold mb-2">Portfolio</h4>
+                            <a 
+                              href={application.portfolioLink} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline"
+                            >
+                              {application.portfolioLink}
+                            </a>
+                          </div>
 
-              {application.status === 'pending' && (
-                <div className="flex gap-3 pt-4">
-                  <Button 
-                    onClick={() => handleApprove(application.id)}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    Approve
-                  </Button>
-                  <Button 
-                    variant="destructive"
-                    onClick={() => handleReject(application.id)}
-                  >
-                    Reject
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                          <div>
+                            <h4 className="font-semibold mb-2">Submitted Date</h4>
+                            <p className="text-muted-foreground">
+                              {new Date(application.submittedAt).toLocaleDateString()}
+                            </p>
+                          </div>
+
+                          {application.status === 'pending' && (
+                            <div className="flex gap-3 pt-4 border-t">
+                              <Button 
+                                onClick={() => handleApprove(application.id)}
+                                className="bg-green-600 hover:bg-green-700"
+                              >
+                                Approve
+                              </Button>
+                              <Button 
+                                variant="destructive"
+                                onClick={() => handleReject(application.id)}
+                              >
+                                Reject
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                    
+                    {application.status === 'pending' && (
+                      <>
+                        <Button 
+                          size="sm"
+                          onClick={() => handleApprove(application.id)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          Approve
+                        </Button>
+                        <Button 
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleReject(application.id)}
+                        >
+                          Reject
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Card>
     </div>
   );
 }

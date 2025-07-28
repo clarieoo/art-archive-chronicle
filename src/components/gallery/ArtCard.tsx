@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Star, Bookmark, MessageCircle, Heart, Reply } from 'lucide-react';
+import { Star, Bookmark, MessageCircle, Heart, Reply, Eye } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -120,6 +120,16 @@ export const ArtCard = ({
           </div>
           
           <div className="flex items-center space-x-2">
+            {/* View Details Button */}
+            <Button
+              variant="ghost" 
+              size="sm"
+              onClick={() => console.log(`View details for artwork ${id}`)}
+              className="h-8 w-8 p-0 hover:bg-accent"
+            >
+              <Eye className="w-4 h-4" />
+            </Button>
+            
             {/* Comments Popover */}
             <Popover>
               <PopoverTrigger asChild>
