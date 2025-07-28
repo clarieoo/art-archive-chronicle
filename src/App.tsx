@@ -26,7 +26,7 @@ import ManageUsers from "./pages/admin/ManageUsers";
 import ReviewArts from "./pages/admin/ReviewArts";
 import Categories from "./pages/admin/Categories";
 import Reports from "./pages/admin/Reports";
-import CuratorApplications from "./pages/admin/CuratorApplications";
+import CuratorApplications from "./pages/professor/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
 import { ReviewArts as ProfessorReviewArts } from "./pages/professor/ReviewArts";
 import VisitorPage from "./pages/visitor/VisitorPage";
@@ -71,6 +71,12 @@ const App = () => (
               <Route path="arts" element={<ReviewArts />} />
               <Route path="categories" element={<Categories />} />
               <Route path="reports" element={<Reports />} />
+            </Route>
+
+            {/* Professor Dashboard Routes */}
+            <Route path="/professor" element={<DashboardLayout userRole="professor" />}>
+              <Route index element={<ProfessorDashboard />} />
+              <Route path="review" element={<ProfessorReviewArts />} />
               <Route path="curator-applications" element={<CuratorApplications />} />
             </Route>
 
@@ -80,11 +86,6 @@ const App = () => (
               <Route path="upload" element={<UploadArt />} />
             </Route>
 
-            {/* Professor Dashboard Routes */}
-            <Route path="/professor" element={<DashboardLayout userRole="professor" />}>
-              <Route index element={<ProfessorDashboard />} />
-              <Route path="review" element={<ProfessorReviewArts />} />
-            </Route>
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

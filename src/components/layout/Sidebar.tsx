@@ -236,7 +236,7 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       </Link>
 
                       <Link 
-                        to="/admin/curator-applications" 
+                        to="/professor/curator-applications" 
                         onClick={handleItemClick}
                         className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
                       >
