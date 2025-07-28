@@ -1,4 +1,4 @@
-import { ArrowLeft, Eye } from 'lucide-react';
+import { ArrowLeft, Eye, Download, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -142,18 +142,53 @@ export default function CuratorApplications() {
                             <p className="text-muted-foreground">{application.motivation}</p>
                           </div>
                           
-                           <div>
-                             <h4 className="font-semibold mb-2">Portfolio</h4>
-                             <a 
-                               href={application.portfolioLink} 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               className="text-primary hover:underline"
-                             >
-                               {application.portfolioLink}
-                             </a>
-                             <p className="text-sm text-muted-foreground mt-1">(CV file uploaded)</p>
-                           </div>
+                            <div>
+                              <h4 className="font-semibold mb-2">Portfolio</h4>
+                              <a 
+                                href={application.portfolioLink} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline block mb-3"
+                              >
+                                {application.portfolioLink}
+                              </a>
+                              
+                              <div className="space-y-2">
+                                <p className="text-sm font-medium">CV Document:</p>
+                                <div className="flex items-center gap-3 p-3 border rounded-lg bg-muted/30">
+                                  <FileText className="h-8 w-8 text-red-500" />
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium">{application.fullName.replace(' ', '_')}_CV.pdf</p>
+                                    <p className="text-xs text-muted-foreground">PDF Document • 2.4 MB</p>
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => window.open(`/sample-cv-${application.id}.pdf`, '_blank')}
+                                      className="h-8"
+                                    >
+                                      <Eye className="h-3 w-3 mr-1" />
+                                      View
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => {
+                                        const link = document.createElement('a');
+                                        link.href = `/sample-cv-${application.id}.pdf`;
+                                        link.download = `${application.fullName.replace(' ', '_')}_CV.pdf`;
+                                        link.click();
+                                      }}
+                                      className="h-8"
+                                    >
+                                      <Download className="h-3 w-3 mr-1" />
+                                      Download
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
                           <div>
                             <h4 className="font-semibold mb-2">Submitted Date</h4>
