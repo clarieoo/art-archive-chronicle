@@ -21,7 +21,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 const mockNotifications: Notification[] = [
   {
     id: 1,
-    time: '2 hours 15 minutes ago',
+    time: '10:15:30 27/05/2025',
     description: 'Your artwork "Sunset Valley" has been approved',
     visitLink: '/gallery/artwork/123',
     from: 'Admin Review Team',
@@ -29,7 +29,7 @@ const mockNotifications: Notification[] = [
   },
   {
     id: 2,
-    time: '1 day 5 minutes ago',
+    time: '14:20:45 26/05/2025',
     description: 'New comment on your artwork submission',
     visitLink: '/dashboard/submissions',
     from: 'Professor Johnson',
@@ -37,7 +37,7 @@ const mockNotifications: Notification[] = [
   },
   {
     id: 3,
-    time: '3 days 45 minutes ago',
+    time: '09:30:15 24/05/2025',
     description: 'Your curator application is under review',
     visitLink: '/upgrade-curator',
     from: 'System Administrator',
@@ -45,7 +45,7 @@ const mockNotifications: Notification[] = [
   },
   {
     id: 4,
-    time: '1 week 2 days ago',
+    time: '12:00:00 20/05/2025',
     description: 'Welcome to the Historical Archive platform',
     visitLink: '/dashboard',
     from: 'System',

@@ -200,14 +200,6 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                         <span>Reports</span>
                       </Link>
 
-                      <Link 
-                        to="/admin/curator-applications" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <GraduationCap className="h-5 w-5" />
-                        <span>Check Upgrade to Curator Form</span>
-                      </Link>
                     </div>
                   </div>
                 )}
@@ -241,6 +233,15 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       >
                         <CheckCircle className="h-5 w-5" />
                         <span>Review Arts</span>
+                      </Link>
+
+                      <Link 
+                        to="/admin/curator-applications" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <GraduationCap className="h-5 w-5" />
+                        <span>Check Upgrade to Curator Form</span>
                       </Link>
                     </div>
                   </div>

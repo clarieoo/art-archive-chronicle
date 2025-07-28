@@ -16,6 +16,7 @@ export default function CuratorApplications() {
       education: "Master's in Art History, Yale University",
       experience: "5 years as Assistant Curator at Metropolitan Museum",
       motivation: "Passionate about sharing historical art with wider audiences...",
+      portfolioLink: "https://johnsmith-art.portfolio.com",
       status: "pending",
       submittedAt: "2024-01-15"
     },
@@ -26,6 +27,7 @@ export default function CuratorApplications() {
       education: "PhD in Museum Studies, Harvard University",
       experience: "3 years at Louvre, specializing in Renaissance period",
       motivation: "Dedicated to preserving cultural heritage...",
+      portfolioLink: "https://sarahjohnson-museum.com",
       status: "approved",
       submittedAt: "2024-01-10"
     }
@@ -99,6 +101,18 @@ export default function CuratorApplications() {
               <div>
                 <h4 className="font-semibold mb-2">Motivation</h4>
                 <p className="text-muted-foreground">{application.motivation}</p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2">Portfolio</h4>
+                <a 
+                  href={application.portfolioLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  {application.portfolioLink}
+                </a>
               </div>
 
               {application.status === 'pending' && (
