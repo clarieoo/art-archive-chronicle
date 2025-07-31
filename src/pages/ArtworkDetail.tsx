@@ -6,6 +6,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import sampleArt1 from '@/assets/sample-art-1.jpg';
+import sampleArt2 from '@/assets/sample-art-2.jpg';
+import sampleArt3 from '@/assets/sample-art-3.jpg';
+import sampleArt4 from '@/assets/sample-art-4.jpg';
+import sampleArt5 from '@/assets/sample-art-5.jpg';
+import sampleArt6 from '@/assets/sample-art-6.jpg';
 
 export default function ArtworkDetail() {
   const { id } = useParams();
@@ -69,6 +75,15 @@ export default function ArtworkDetail() {
   const handleWatchLaterToggle = () => {
     setIsWatchLater(!isWatchLater);
   };
+
+  // Related artworks
+  const relatedArtworks = [
+    { id: 'art-2', image: sampleArt2, title: 'Related Art 1' },
+    { id: 'art-3', image: sampleArt3, title: 'Related Art 2' },
+    { id: 'art-4', image: sampleArt4, title: 'Related Art 3' },
+    { id: 'art-5', image: sampleArt5, title: 'Related Art 4' },
+    { id: 'art-6', image: sampleArt6, title: 'Related Art 5' }
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -163,6 +178,30 @@ export default function ArtworkDetail() {
                     />
                     <Button size="sm">Post</Button>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Related Artworks */}
+            <Card className="mt-6">
+              <CardContent className="p-6">
+                <h3 className="font-semibold mb-4">Related Artworks</h3>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  {relatedArtworks.map((relatedArt) => (
+                    <div 
+                      key={relatedArt.id} 
+                      className="cursor-pointer group"
+                      onClick={() => navigate(`/artwork/${relatedArt.id}`)}
+                    >
+                      <div className="aspect-square overflow-hidden rounded-lg">
+                        <img
+                          src={relatedArt.image}
+                          alt={relatedArt.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>

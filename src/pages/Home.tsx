@@ -6,34 +6,28 @@ import { ArrowRight, Star, Users, Image as ImageIcon } from 'lucide-react';
 import sampleArt1 from '@/assets/sample-art-1.jpg';
 import sampleArt2 from '@/assets/sample-art-2.jpg';
 import sampleArt3 from '@/assets/sample-art-3.jpg';
+import sampleArt4 from '@/assets/sample-art-4.jpg';
+import sampleArt5 from '@/assets/sample-art-5.jpg';
+import sampleArt6 from '@/assets/sample-art-6.jpg';
 
 export default function Home() {
-  const featuredArtworks = [
-    {
-      id: 1,
-      title: "Renaissance Masterpiece",
-      artist: "Leonardo da Vinci",
-      period: "Renaissance",
-      image: sampleArt1,
-      rating: 4.8
-    },
-    {
-      id: 2,
-      title: "Classical Sculpture",
-      artist: "Michelangelo",
-      period: "Classical",
-      image: sampleArt2,
-      rating: 4.9
-    },
-    {
-      id: 3,
-      title: "Medieval Illumination",
-      artist: "Unknown Master",
-      period: "Medieval",
-      image: sampleArt3,
-      rating: 4.7
-    }
+  const images = [sampleArt1, sampleArt2, sampleArt3, sampleArt4, sampleArt5, sampleArt6];
+  const artists = ['Leonardo da Vinci', 'Michelangelo', 'Raphael', 'Botticelli', 'Donatello', 'Caravaggio'];
+  const periods = ['Renaissance', 'Medieval', 'Baroque', 'Classical', 'Gothic', 'Roman'];
+  const titles = [
+    'Madonna and Child', 'David', 'The Creation', 'Venus Rising', 'Sacred Manuscript',
+    'Portrait of a Lady'
   ];
+
+  const featuredArtworks = Array.from({ length: 6 }, (_, i) => ({
+    id: `art-${i + 1}`,
+    title: titles[i],
+    artist: artists[i],
+    period: periods[i],
+    image: images[i],
+    rating: Math.random() * 2 + 3, // Random rating between 3-5
+    totalRatings: Math.floor(Math.random() * 500) + 50,
+  }));
 
   return (
     <div className="min-h-screen">
@@ -64,13 +58,13 @@ export default function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" asChild className="bg-brown-medium hover:bg-brown-medium/90 text-warm-white border-0 shadow-elegant">
+            <Button size="lg" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground border-0 shadow-elegant">
               <Link to="/gallery">
                 Explore Gallery
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-2 border-warm-white text-warm-white hover:bg-warm-white hover:text-brown-dark">
+            <Button size="lg" asChild className="bg-secondary hover:bg-secondary/90 text-secondary-foreground border-2 border-secondary">
               <Link to="/about">Learn More</Link>
             </Button>
           </div>
@@ -185,10 +179,10 @@ export default function Home() {
             Upgrade to curator status to share your own historical pieces.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" asChild>
+            <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
               <Link to="/signup">Sign Up Today</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+            <Button size="lg" asChild className="bg-secondary hover:bg-secondary/90 text-secondary-foreground border-2 border-secondary">
               <Link to="/signin">Sign In</Link>
             </Button>
           </div>
