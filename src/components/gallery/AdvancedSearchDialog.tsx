@@ -238,7 +238,6 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
           {/* Sort By */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Sort By</h3>
-            <Label htmlFor="sortBy">Sort by</Label>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger>
                 <SelectValue />

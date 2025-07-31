@@ -60,18 +60,6 @@ export default function Gallery() {
               Detail Search
             </Button>
 
-            {/* Clear Filters */}
-            {(searchQuery || categoryFilter) && (
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setSearchQuery('');
-                  setCategoryFilter('');
-                }}
-              >
-                Clear Filters
-              </Button>
-            )}
           </div>
         </div>
 
