@@ -1,23 +1,20 @@
 import { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { GalleryGrid } from '@/components/gallery/GalleryGrid';
+import { AdvancedSearchDialog } from '@/components/gallery/AdvancedSearchDialog';
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [advancedSearchOpen, setAdvancedSearchOpen] = useState(false);
 
-  const categories = [
-    { label: 'All Categories', value: 'all' },
-    { label: 'Renaissance', value: 'Renaissance' },
-    { label: 'Medieval', value: 'Medieval' },
-    { label: 'Baroque', value: 'Baroque' },
-    { label: 'Classical', value: 'Classical' },
-    { label: 'Gothic', value: 'Gothic' },
-    { label: 'Roman', value: 'Roman' }
-  ];
+  const handleAdvancedSearch = (filters: any) => {
+    // Apply advanced search filters
+    setSearchQuery(filters.anyField || filters.title || '');
+    setCategoryFilter(filters.category || '');
+  };
 
   return (
     <div className="min-h-screen bg-background py-8">
@@ -45,33 +42,22 @@ export default function Gallery() {
               />
             </div>
 
-            {/* Category Filter */}
-            <div className="w-full md:w-64">
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger>
-                  <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="All Categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem 
-                      key={category.value} 
-                      value={category.value}
-                    >
-                      {category.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {/* Advanced Search Button */}
+            <Button
+              variant="outline"
+              onClick={() => setAdvancedSearchOpen(true)}
+            >
+              <Search className="h-4 w-4 mr-2" />
+              Advanced Search
+            </Button>
 
             {/* Clear Filters */}
-            {(searchQuery || categoryFilter !== 'all') && (
+            {(searchQuery || categoryFilter) && (
               <Button
                 variant="outline"
                 onClick={() => {
                   setSearchQuery('');
-                  setCategoryFilter('all');
+                  setCategoryFilter('');
                 }}
               >
                 Clear Filters
@@ -81,7 +67,14 @@ export default function Gallery() {
         </div>
 
         {/* Gallery Grid */}
-        <GalleryGrid searchQuery={searchQuery} categoryFilter={categoryFilter === 'all' ? '' : categoryFilter} />
+        <GalleryGrid searchQuery={searchQuery} categoryFilter={categoryFilter} />
+        
+        {/* Advanced Search Dialog */}
+        <AdvancedSearchDialog
+          open={advancedSearchOpen}
+          onOpenChange={setAdvancedSearchOpen}
+          onSearch={handleAdvancedSearch}
+        />
       </div>
     </div>
   );
