@@ -95,7 +95,6 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Advanced Search</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -241,6 +240,10 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-4">
+            <Button onClick={handleSearch} className="flex-1">
+              <Search className="h-4 w-4 mr-2" />
+              Search
+            </Button>
             <Button variant="outline" onClick={clearFilters}>
               Clear
             </Button>
