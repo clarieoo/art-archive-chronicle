@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Star, Bookmark, Heart, MessageCircle, Share2, Download } from 'lucide-react';
+import { ArrowLeft, Star, Bookmark, Heart, MessageCircle, Share2, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -19,6 +19,7 @@ export default function ArtworkDetail() {
   const [userRating, setUserRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [isWatchLater, setIsWatchLater] = useState(false);
+  const [relatedStartIndex, setRelatedStartIndex] = useState(0);
 
   // Mock artwork data - in real app, this would come from API based on id
   const artwork = {
@@ -76,14 +77,36 @@ export default function ArtworkDetail() {
     setIsWatchLater(!isWatchLater);
   };
 
-  // Related artworks
-  const relatedArtworks = [
-    { id: 'art-2', image: sampleArt2, title: 'Related Art 1' },
-    { id: 'art-3', image: sampleArt3, title: 'Related Art 2' },
-    { id: 'art-4', image: sampleArt4, title: 'Related Art 3' },
-    { id: 'art-5', image: sampleArt5, title: 'Related Art 4' },
-    { id: 'art-6', image: sampleArt6, title: 'Related Art 5' }
+  // Generate more related artworks (simulate 15 total artworks)
+  const allRelatedArtworks = [
+    { id: 'art-2', image: sampleArt2, title: 'Classical Portrait' },
+    { id: 'art-3', image: sampleArt3, title: 'Renaissance Scene' },
+    { id: 'art-4', image: sampleArt4, title: 'Medieval Manuscript' },
+    { id: 'art-5', image: sampleArt5, title: 'Baroque Painting' },
+    { id: 'art-6', image: sampleArt6, title: 'Gothic Architecture' },
+    { id: 'art-7', image: sampleArt1, title: 'Ancient Sculpture' },
+    { id: 'art-8', image: sampleArt2, title: 'Roman Fresco' },
+    { id: 'art-9', image: sampleArt3, title: 'Byzantine Art' },
+    { id: 'art-10', image: sampleArt4, title: 'Victorian Portrait' },
+    { id: 'art-11', image: sampleArt5, title: 'Impressionist Work' },
+    { id: 'art-12', image: sampleArt6, title: 'Modern Classic' },
+    { id: 'art-13', image: sampleArt1, title: 'Contemporary Piece' },
+    { id: 'art-14', image: sampleArt2, title: 'Abstract Expression' },
+    { id: 'art-15', image: sampleArt3, title: 'Cultural Heritage' },
+    { id: 'art-16', image: sampleArt4, title: 'Historical Document' }
   ];
+
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(allRelatedArtworks.length / itemsPerPage);
+  const currentRelatedArtworks = allRelatedArtworks.slice(relatedStartIndex, relatedStartIndex + itemsPerPage);
+
+  const handlePrevRelated = () => {
+    setRelatedStartIndex(prev => Math.max(0, prev - itemsPerPage));
+  };
+
+  const handleNextRelated = () => {
+    setRelatedStartIndex(prev => Math.min(allRelatedArtworks.length - itemsPerPage, prev + itemsPerPage));
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -126,6 +149,56 @@ export default function ArtworkDetail() {
                   className="w-full h-full object-cover"
                 />
               </div>
+            </Card>
+
+            {/* Related Artworks - Moved above comments */}
+            <Card className="mt-6">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold">Related Artworks</h3>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={handlePrevRelated}
+                      disabled={relatedStartIndex === 0}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      {Math.floor(relatedStartIndex / itemsPerPage) + 1} / {totalPages}
+                    </span>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={handleNextRelated}
+                      disabled={relatedStartIndex + itemsPerPage >= allRelatedArtworks.length}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-5 gap-4">
+                  {currentRelatedArtworks.map((relatedArt) => (
+                    <div 
+                      key={relatedArt.id} 
+                      className="cursor-pointer group"
+                      onClick={() => navigate(`/artwork/${relatedArt.id}`)}
+                    >
+                      <div className="aspect-square overflow-hidden rounded-lg">
+                        <img
+                          src={relatedArt.image}
+                          alt={relatedArt.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2 text-center truncate">
+                        {relatedArt.title}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
             </Card>
 
             {/* Comments Section */}
@@ -178,30 +251,6 @@ export default function ArtworkDetail() {
                     />
                     <Button size="sm">Post</Button>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Related Artworks */}
-            <Card className="mt-6">
-              <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">Related Artworks</h3>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                  {relatedArtworks.map((relatedArt) => (
-                    <div 
-                      key={relatedArt.id} 
-                      className="cursor-pointer group"
-                      onClick={() => navigate(`/artwork/${relatedArt.id}`)}
-                    >
-                      <div className="aspect-square overflow-hidden rounded-lg">
-                        <img
-                          src={relatedArt.image}
-                          alt={relatedArt.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
