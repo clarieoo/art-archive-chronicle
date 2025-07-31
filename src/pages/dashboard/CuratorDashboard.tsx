@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Upload, MessageSquare, Image, PlusCircle, Clock, CheckCircle } from "lucide-react";
+import { Upload, Settings, Image, PlusCircle, Clock, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function CuratorDashboard() {
@@ -61,15 +61,15 @@ export default function CuratorDashboard() {
 
           <Card className="hover:shadow-lg transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm">
             <CardHeader className="text-center">
-              <MessageSquare className="h-12 w-12 text-purple-600 mx-auto mb-2" />
-              <CardTitle>Discussions</CardTitle>
-              <CardDescription>Engage with other curators</CardDescription>
+              <Settings className="h-12 w-12 text-purple-600 mx-auto mb-2" />
+              <CardTitle>Manage Artworks</CardTitle>
+              <CardDescription>Edit, delete and manage your artworks</CardDescription>
             </CardHeader>
             <CardContent>
-              <Link to="/curator/discussions">
+              <Link to="/curator/manage">
                 <Button variant="outline" className="w-full">
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  Join Discussions
+                  <Settings className="mr-2 h-4 w-4" />
+                  Manage Artworks
                 </Button>
               </Link>
             </CardContent>
