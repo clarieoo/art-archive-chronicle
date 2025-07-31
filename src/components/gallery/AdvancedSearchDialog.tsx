@@ -98,9 +98,23 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
         </DialogHeader>
         
         <div className="space-y-6">
+          {/* Any Field Search Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Any Field Search</h3>
+            <div className="space-y-2">
+              <Label htmlFor="anyField">Search all fields</Label>
+              <Input
+                id="anyField"
+                value={anyField}
+                onChange={(e) => setAnyField(e.target.value)}
+                placeholder="Enter search term"
+              />
+            </div>
+          </div>
+
           {/* Detail Search Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Detail Search</h3>
+            <h3 className="text-lg font-bold">Detail Search</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Title */}
@@ -161,7 +175,7 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
 
           {/* Date Range */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Date Range</h3>
+            <h3 className="text-lg font-bold">Date Range</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* From Date */}
               <div className="space-y-2">
@@ -222,7 +236,8 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
           </div>
 
           {/* Sort By */}
-          <div className="space-y-2">
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold">Sort By</h3>
             <Label htmlFor="sortBy">Sort by</Label>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger>

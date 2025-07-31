@@ -45,10 +45,19 @@ export default function Gallery() {
             {/* Search Button */}
             <Button
               variant="outline"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              <Search className="h-4 w-4 mr-2" />
+              Search
+            </Button>
+
+            {/* Detail Search Button */}
+            <Button
+              variant="outline"
               onClick={() => setAdvancedSearchOpen(true)}
               className="text-amber-700 border-amber-700 hover:bg-amber-50"
             >
-              Search
+              Detail Search
             </Button>
 
             {/* Clear Filters */}
