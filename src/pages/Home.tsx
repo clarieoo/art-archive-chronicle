@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Star, Users, Image as ImageIcon } from 'lucide-react';
+import { ArrowRight, Users, Image as ImageIcon, Star } from 'lucide-react';
+import { ArtCard } from '@/components/gallery/ArtCard';
 import sampleArt1 from '@/assets/sample-art-1.jpg';
 import sampleArt2 from '@/assets/sample-art-2.jpg';
 import sampleArt3 from '@/assets/sample-art-3.jpg';
@@ -117,43 +117,16 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {featuredArtworks.map((artwork) => (
-              <Card key={artwork.id} className="group overflow-hidden hover:shadow-elegant transition-all duration-300 hover:-translate-y-2">
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <img
-                    src={artwork.image}
-                    alt={artwork.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-primary/90">
-                    {artwork.period}
-                  </Badge>
-                </div>
-                
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-xl text-foreground mb-2">
-                    {artwork.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    by {artwork.artist}
-                  </p>
-                  <div className="flex items-center space-x-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className={`w-4 h-4 ${
-                          star <= Math.round(artwork.rating)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-muted-foreground'
-                        }`}
-                      />
-                    ))}
-                    <span className="text-sm text-muted-foreground ml-2">
-                      {artwork.rating}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
+              <ArtCard
+                key={artwork.id}
+                id={artwork.id}
+                title={artwork.title}
+                artist={artwork.artist}
+                period={artwork.period}
+                image={artwork.image}
+                rating={artwork.rating}
+                totalRatings={artwork.totalRatings}
+              />
             ))}
           </div>
           
