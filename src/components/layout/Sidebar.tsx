@@ -217,6 +217,15 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                         <Upload className="h-5 w-5" />
                         <span>Upload Art</span>
                       </Link>
+
+                      <Link 
+                        to="/curator/manage" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Settings className="h-5 w-5" />
+                        <span>Manage Artworks</span>
+                      </Link>
                     </div>
                   </div>
                 )}

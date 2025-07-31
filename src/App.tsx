@@ -30,6 +30,7 @@ import Categories from "./pages/admin/Categories";
 import Reports from "./pages/admin/Reports";
 import CuratorApplications from "./pages/professor/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
+import { ManageArtworks } from "./pages/curator/ManageArtworks";
 import { ReviewArts as ProfessorReviewArts } from "./pages/professor/ReviewArts";
 import VisitorPage from "./pages/visitor/VisitorPage";
 import { Notifications } from "./pages/Notifications";
@@ -84,10 +85,11 @@ const App = () => (
             </Route>
 
             {/* Curator Dashboard Routes */}
-            <Route path="/curator" element={<DashboardLayout userRole="curator" />}>
-              <Route index element={<CuratorDashboard />} />
-              <Route path="upload" element={<UploadArt />} />
-            </Route>
+        <Route path="/curator" element={<DashboardLayout userRole="curator" />}>
+          <Route index element={<CuratorDashboard />} />
+          <Route path="upload" element={<UploadArt />} />
+          <Route path="manage" element={<ManageArtworks />} />
+        </Route>
 
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
