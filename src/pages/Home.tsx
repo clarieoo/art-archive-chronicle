@@ -116,7 +116,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {featuredArtworks.map((artwork) => (
+            {featuredArtworks.slice(0, 3).map((artwork) => (
               <ArtCard
                 key={artwork.id}
                 id={artwork.id}
