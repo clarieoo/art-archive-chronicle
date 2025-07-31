@@ -99,21 +99,6 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
         </DialogHeader>
         
         <div className="space-y-6">
-          {/* Any Field Search */}
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <Input
-                placeholder="Any Field"
-                value={anyField}
-                onChange={(e) => setAnyField(e.target.value)}
-              />
-            </div>
-            <Button onClick={handleSearch}>
-              <Search className="h-4 w-4 mr-2" />
-              Search
-            </Button>
-          </div>
-
           {/* Detail Search Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Detail Search</h3>
@@ -132,69 +117,45 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
               {/* Category */}
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat}>
-                        {cat}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder="Enter category"
+                />
               </div>
 
               {/* Culture */}
               <div className="space-y-2">
                 <Label htmlFor="culture">Culture</Label>
-                <Select value={culture} onValueChange={setCulture}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select culture" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cultures.map((cult) => (
-                      <SelectItem key={cult} value={cult}>
-                        {cult}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="culture"
+                  value={culture}
+                  onChange={(e) => setCulture(e.target.value)}
+                  placeholder="Enter culture"
+                />
               </div>
 
               {/* Department */}
               <div className="space-y-2">
                 <Label htmlFor="department">Department</Label>
-                <Select value={department} onValueChange={setDepartment}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {departments.map((dept) => (
-                      <SelectItem key={dept} value={dept}>
-                        {dept}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="department"
+                  value={department}
+                  onChange={(e) => setDepartment(e.target.value)}
+                  placeholder="Enter department"
+                />
               </div>
 
               {/* Period */}
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="period">Period</Label>
-                <Select value={period} onValueChange={setPeriod}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select period" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {periods.map((per) => (
-                      <SelectItem key={per} value={per}>
-                        {per}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="period"
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+                  placeholder="Enter period"
+                />
               </div>
             </div>
           </div>
@@ -280,10 +241,6 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
 
           {/* Action Buttons */}
           <div className="flex gap-2 pt-4">
-            <Button onClick={handleSearch} className="flex-1">
-              <Search className="h-4 w-4 mr-2" />
-              Search
-            </Button>
             <Button variant="outline" onClick={clearFilters}>
               Clear
             </Button>

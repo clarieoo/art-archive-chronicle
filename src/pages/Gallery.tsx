@@ -42,13 +42,13 @@ export default function Gallery() {
               />
             </div>
 
-            {/* Advanced Search Button */}
+            {/* Search Button */}
             <Button
               variant="outline"
               onClick={() => setAdvancedSearchOpen(true)}
+              className="text-amber-700 border-amber-700 hover:bg-amber-50"
             >
-              <Search className="h-4 w-4 mr-2" />
-              Advanced Search
+              Search
             </Button>
 
             {/* Clear Filters */}
