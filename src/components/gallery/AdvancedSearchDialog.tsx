@@ -59,8 +59,8 @@ export function AdvancedSearchDialog({ open, onOpenChange, onSearch }: AdvancedS
     { value: 'best_match', label: 'Best Match' },
     { value: 'ascending', label: 'Ascending' },
     { value: 'descending', label: 'Descending' },
-    { value: 'most_few', label: 'Most Few' },
-    { value: 'least_few', label: 'Least Few' }
+    { value: 'most_few', label: 'Most Favorite' },
+    { value: 'least_few', label: 'Least Favorite' }
   ];
 
   const handleSearch = () => {
