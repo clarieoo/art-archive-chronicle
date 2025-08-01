@@ -13,23 +13,42 @@ export const UploadArt = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    dimension: '',
     category: '',
     tags: '',
-    file: null as File | null
+    culture: '',
+    department: '',
+    period: '',
+    location: '',
+    files: [] as File[]
   });
 
-  const [preview, setPreview] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<string[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData({ ...formData, file });
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0 && formData.files.length + files.length <= 5) {
+      const newFiles = [...formData.files, ...files];
+      setFormData({ ...formData, files: newFiles });
+      
+      // Generate previews for new files
+      const newPreviews = [...previews];
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          newPreviews.push(reader.result as string);
+          setPreviews([...newPreviews]);
+        };
+        reader.readAsDataURL(file);
+      });
     }
+  };
+
+  const removeImage = (index: number) => {
+    const newFiles = formData.files.filter((_, i) => i !== index);
+    const newPreviews = previews.filter((_, i) => i !== index);
+    setFormData({ ...formData, files: newFiles });
+    setPreviews(newPreviews);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -66,49 +85,65 @@ export const UploadArt = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* File Upload */}
                 <div className="space-y-2">
-                  <Label htmlFor="file">Artwork Image</Label>
-                  <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-                    {preview ? (
+                  <Label htmlFor="files">Artwork Images (up to 5)</Label>
+                  <div className="border-2 border-dashed border-border rounded-lg p-6">
+                    {previews.length > 0 ? (
                       <div className="space-y-4">
-                        <img 
-                          src={preview} 
-                          alt="Preview" 
-                          className="max-h-64 mx-auto rounded-lg object-cover"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => {
-                            setPreview(null);
-                            setFormData({ ...formData, file: null });
-                          }}
-                        >
-                          Change Image
-                        </Button>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          {previews.map((preview, index) => (
+                            <div key={index} className="relative">
+                              <img 
+                                src={preview} 
+                                alt={`Preview ${index + 1}`} 
+                                className="w-full h-32 object-cover rounded-lg"
+                              />
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="sm"
+                                className="absolute top-2 right-2"
+                                onClick={() => removeImage(index)}
+                              >
+                                ×
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                        {formData.files.length < 5 && (
+                          <div className="text-center">
+                            <Label
+                              htmlFor="files"
+                              className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+                            >
+                              Add More Images
+                            </Label>
+                          </div>
+                        )}
                       </div>
                     ) : (
-                      <div className="space-y-4">
+                      <div className="text-center space-y-4">
                         <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground" />
                         <div>
                           <Label
-                            htmlFor="file"
+                            htmlFor="files"
                             className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
                           >
-                            Choose Image
+                            Choose Images
                           </Label>
-                          <Input
-                            id="file"
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            className="hidden"
-                          />
                         </div>
                         <p className="text-sm text-muted-foreground">
-                          Drag and drop or click to select an image file
+                          Select up to 5 images for your artwork
                         </p>
                       </div>
                     )}
+                    <Input
+                      id="files"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
                   </div>
                 </div>
 
@@ -137,21 +172,28 @@ export const UploadArt = () => {
                   />
                 </div>
 
+                {/* Dimension */}
+                <div className="space-y-2">
+                  <Label htmlFor="dimension">Dimension</Label>
+                  <Input
+                    id="dimension"
+                    value={formData.dimension}
+                    onChange={(e) => setFormData({ ...formData, dimension: e.target.value })}
+                    placeholder="Enter artwork dimensions (e.g., 24 x 36 inches)"
+                    required
+                  />
+                </div>
+
                 {/* Category */}
                 <div className="space-y-2">
                   <Label htmlFor="category">Category</Label>
-                  <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="painting">Painting</SelectItem>
-                      <SelectItem value="sculpture">Sculpture</SelectItem>
-                      <SelectItem value="photography">Photography</SelectItem>
-                      <SelectItem value="digital">Digital Art</SelectItem>
-                      <SelectItem value="mixed-media">Mixed Media</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="category"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    placeholder="Enter artwork category"
+                    required
+                  />
                 </div>
 
                 {/* Tags */}
@@ -166,6 +208,53 @@ export const UploadArt = () => {
                   <p className="text-sm text-muted-foreground">
                     Separate tags with commas (e.g., abstract, colorful, modern)
                   </p>
+                </div>
+
+                {/* Culture */}
+                <div className="space-y-2">
+                  <Label htmlFor="culture">Culture</Label>
+                  <Input
+                    id="culture"
+                    value={formData.culture}
+                    onChange={(e) => setFormData({ ...formData, culture: e.target.value })}
+                    placeholder="Enter cultural context or origin"
+                  />
+                </div>
+
+                {/* Department */}
+                <div className="space-y-2">
+                  <Label htmlFor="department">Department</Label>
+                  <Input
+                    id="department"
+                    value={formData.department}
+                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                    placeholder="Enter department or institution"
+                  />
+                </div>
+
+                {/* Period */}
+                <div className="space-y-2">
+                  <Label htmlFor="period">Period</Label>
+                  <Input
+                    id="period"
+                    value={formData.period}
+                    onChange={(e) => setFormData({ ...formData, period: e.target.value })}
+                    placeholder="Enter time period or era"
+                  />
+                </div>
+
+                {/* Location Section */}
+                <div className="space-y-4 border-t pt-6">
+                  <h3 className="text-lg font-semibold text-foreground">Location</h3>
+                  <div className="space-y-2">
+                    <Label htmlFor="location">Location</Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                      placeholder="Enter current location or museum"
+                    />
+                  </div>
                 </div>
 
                 {/* Submit Button */}
