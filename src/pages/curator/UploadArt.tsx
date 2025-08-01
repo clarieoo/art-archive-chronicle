@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Upload, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Upload, Image as ImageIcon, CalendarIcon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 export const UploadArt = () => {
   const navigate = useNavigate();
@@ -24,6 +28,7 @@ export const UploadArt = () => {
   });
 
   const [previews, setPreviews] = useState<string[]>([]);
+  const [foundDate, setFoundDate] = useState<Date>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -99,9 +104,8 @@ export const UploadArt = () => {
                               />
                               <Button
                                 type="button"
-                                variant="destructive"
                                 size="sm"
-                                className="absolute top-2 right-2"
+                                className="absolute top-2 right-2 bg-amber-800 hover:bg-amber-900 text-white border-0 w-6 h-6 p-0 rounded-full"
                                 onClick={() => removeImage(index)}
                               >
                                 ×
@@ -241,6 +245,34 @@ export const UploadArt = () => {
                     onChange={(e) => setFormData({ ...formData, period: e.target.value })}
                     placeholder="Enter time period or era"
                   />
+                </div>
+
+                {/* Exact Found Date */}
+                <div className="space-y-2">
+                  <Label htmlFor="foundDate">Exact Found Date</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !foundDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {foundDate ? format(foundDate, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={foundDate}
+                        onSelect={setFoundDate}
+                        initialFocus
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Location Section */}
