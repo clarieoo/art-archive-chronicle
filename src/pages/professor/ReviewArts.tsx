@@ -17,8 +17,15 @@ interface ArtSubmission {
   category: string;
   submittedDate: string;
   status: 'pending' | 'approved' | 'rejected';
-  image: string;
+  images: string[];
   description: string;
+  dimension: string;
+  tags: string;
+  culture: string;
+  department: string;
+  period: string;
+  foundDate?: string;
+  location: string;
 }
 
 export const ReviewArts = () => {
@@ -35,8 +42,15 @@ export const ReviewArts = () => {
       category: 'Painting',
       submittedDate: '2024-01-15',
       status: 'pending',
-      image: '/src/assets/sample-art-1.jpg',
-      description: 'A vibrant abstract painting exploring the harmony between colors and forms.'
+      images: ['/src/assets/sample-art-1.jpg', '/src/assets/sample-art-2.jpg'],
+      description: 'A vibrant abstract painting exploring the harmony between colors and forms.',
+      dimension: '24 x 36 inches',
+      tags: 'abstract, colorful, modern',
+      culture: 'Contemporary Western',
+      department: 'Fine Arts',
+      period: '21st Century',
+      foundDate: '2024-01-10',
+      location: 'Metropolitan Museum'
     },
     {
       id: '2',
@@ -45,8 +59,15 @@ export const ReviewArts = () => {
       category: 'Digital Art',
       submittedDate: '2024-01-14',
       status: 'approved',
-      image: '/src/assets/sample-art-2.jpg',
-      description: 'A digital artwork that blends reality with dreams through innovative techniques.'
+      images: ['/src/assets/sample-art-2.jpg'],
+      description: 'A digital artwork that blends reality with dreams through innovative techniques.',
+      dimension: '1920 x 1080 pixels',
+      tags: 'digital, surreal, technology',
+      culture: 'Digital Age',
+      department: 'Digital Media',
+      period: 'Contemporary',
+      foundDate: '2024-01-12',
+      location: 'Digital Arts Center'
     },
     {
       id: '3',
@@ -55,8 +76,15 @@ export const ReviewArts = () => {
       category: 'Sculpture',
       submittedDate: '2024-01-13',
       status: 'rejected',
-      image: '/src/assets/sample-art-3.jpg',
-      description: 'A modern sculpture representing the complexity of urban life.'
+      images: ['/src/assets/sample-art-3.jpg', '/src/assets/sample-art-4.jpg', '/src/assets/sample-art-5.jpg'],
+      description: 'A modern sculpture representing the complexity of urban life.',
+      dimension: '8 x 6 x 4 feet',
+      tags: 'sculpture, urban, modern',
+      culture: 'Urban Contemporary',
+      department: 'Sculpture',
+      period: 'Modern',
+      foundDate: '2024-01-08',
+      location: 'City Art Gallery'
     },
     {
       id: '4',
@@ -65,8 +93,15 @@ export const ReviewArts = () => {
       category: 'Photography',
       submittedDate: '2024-01-12',
       status: 'pending',
-      image: '/src/assets/sample-art-4.jpg',
-      description: 'A photography series capturing the subtle beauty of natural landscapes.'
+      images: ['/src/assets/sample-art-4.jpg'],
+      description: 'A photography series capturing the subtle beauty of natural landscapes.',
+      dimension: '16 x 20 inches',
+      tags: 'photography, nature, landscape',
+      culture: 'Environmental Art',
+      department: 'Photography',
+      period: 'Contemporary',
+      foundDate: '2024-01-05',
+      location: 'Nature Museum'
     }
   ];
 
@@ -117,7 +152,7 @@ export const ReviewArts = () => {
             <TableCell>
               <div className="flex items-center space-x-3">
                 <img 
-                  src={art.image} 
+                  src={art.images[0]} 
                   alt={art.title}
                   className="w-12 h-12 rounded object-cover"
                 />
@@ -126,6 +161,9 @@ export const ReviewArts = () => {
                   <p className="text-sm text-muted-foreground truncate max-w-[200px]">
                     {art.description}
                   </p>
+                  {art.images.length > 1 && (
+                    <p className="text-xs text-muted-foreground">+{art.images.length - 1} more</p>
+                  )}
                 </div>
               </div>
             </TableCell>
@@ -152,20 +190,53 @@ export const ReviewArts = () => {
                     </DialogHeader>
                     {selectedArt && (
                       <div className="space-y-4">
-                        <div className="aspect-video w-full overflow-hidden rounded-lg">
-                          <img 
-                            src={selectedArt.image} 
-                            alt={selectedArt.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                        {/* Images Gallery */}
                         <div className="space-y-2">
+                          <div className="aspect-video w-full overflow-hidden rounded-lg">
+                            <img 
+                              src={selectedArt.images[0]} 
+                              alt={selectedArt.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          {selectedArt.images.length > 1 && (
+                            <div className="grid grid-cols-4 gap-2">
+                              {selectedArt.images.slice(1).map((image, index) => (
+                                <img 
+                                  key={index}
+                                  src={image} 
+                                  alt={`${selectedArt.title} ${index + 2}`}
+                                  className="w-full h-16 object-cover rounded"
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Artwork Details */}
+                        <div className="space-y-4">
                           <h3 className="text-lg font-semibold">{selectedArt.title}</h3>
                           <p className="text-muted-foreground">{selectedArt.description}</p>
-                          <div className="flex gap-4 text-sm">
-                            <span><strong>Curator:</strong> {selectedArt.curator}</span>
-                            <span><strong>Category:</strong> {selectedArt.category}</span>
-                            <span><strong>Submitted:</strong> {selectedArt.submittedDate}</span>
+                          
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div><strong>Curator:</strong> {selectedArt.curator}</div>
+                            <div><strong>Category:</strong> {selectedArt.category}</div>
+                            <div><strong>Dimension:</strong> {selectedArt.dimension}</div>
+                            <div><strong>Department:</strong> {selectedArt.department}</div>
+                            <div><strong>Culture:</strong> {selectedArt.culture}</div>
+                            <div><strong>Period:</strong> {selectedArt.period}</div>
+                            <div><strong>Found Date:</strong> {selectedArt.foundDate}</div>
+                            <div><strong>Location:</strong> {selectedArt.location}</div>
+                          </div>
+                          
+                          {selectedArt.tags && (
+                            <div className="text-sm">
+                              <strong>Tags:</strong> {selectedArt.tags}
+                            </div>
+                          )}
+                          
+                          <div className="text-sm text-muted-foreground">
+                            <strong>Submitted:</strong> {selectedArt.submittedDate}
                           </div>
                         </div>
                         
