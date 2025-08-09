@@ -179,6 +179,10 @@ export const ReviewArts = () => {
                     <Button 
                       variant="outline" 
                       size="sm"
+                      onClick={() => {
+                        setSelectedArt(art);
+                        setSelectedImageIndex(0); // Reset image index when opening dialog
+                      }}
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View Details
@@ -194,10 +198,13 @@ export const ReviewArts = () => {
                         <h4 className="font-semibold">Artwork Images</h4>
                         <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
                           <img 
-                            src={art.images[selectedImageIndex || 0]} 
+                            src={art.images[selectedImageIndex] || art.images[0]} 
                             alt={art.title}
                             className="w-full h-full object-cover cursor-pointer"
-                            onClick={() => window.open(art.images[selectedImageIndex || 0], '_blank')}
+                            onClick={() => {
+                              const imageUrl = art.images[selectedImageIndex] || art.images[0];
+                              window.open(imageUrl, '_blank');
+                            }}
                           />
                         </div>
                         {art.images.length > 1 && (
@@ -206,7 +213,7 @@ export const ReviewArts = () => {
                               <div
                                 key={index}
                                 className={`cursor-pointer group relative overflow-hidden rounded border-2 transition-all duration-300 ${
-                                  (selectedImageIndex || 0) === index 
+                                  selectedImageIndex === index 
                                     ? 'border-primary shadow-lg' 
                                     : 'border-transparent hover:border-muted-foreground/30'
                                 }`}
@@ -217,7 +224,7 @@ export const ReviewArts = () => {
                                   alt={`${art.title} view ${index + 1}`}
                                   className="w-full h-20 object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
-                                {(selectedImageIndex || 0) === index && (
+                                {selectedImageIndex === index && (
                                   <div className="absolute inset-0 bg-primary/10 pointer-events-none" />
                                 )}
                               </div>
