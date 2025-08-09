@@ -115,12 +115,14 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
             ) : (
               <div className="flex items-center space-x-3">
                 {/* Bookmarks */}
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/bookmarks">
-                    <Bookmark className="h-4 w-4" />
-                  </Link>
-                </Button>
-                
+                {userRole === 'visitor' && (
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/bookmarks">
+                      <Bookmark className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
+
                 {/* Watched Later (visitor only) */}
                 {userRole === 'visitor' && (
                   <Button variant="ghost" size="sm" asChild>
