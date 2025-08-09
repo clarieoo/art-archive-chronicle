@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ArrowLeft, Heart, Search, Filter, Grid, List, Share2, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, Heart, Search, Filter, Grid, List, Share2, Trash2, Bookmark } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -38,7 +38,7 @@ export default function Bookmarks() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Mock bookmarked artworks data
-  const bookmarkedArtworks: BookmarkedArt[] = [
+  const defaultBookmarks: BookmarkedArt[] = [
     {
       id: '1',
       title: 'The Starry Night',
@@ -107,6 +107,21 @@ export default function Bookmarks() {
     }
   ];
 
+  const [bookmarkedArtworks, setBookmarkedArtworks] = useState<BookmarkedArt[]>(() => {
+    try {
+      const raw = localStorage.getItem('bookmarks');
+      return raw ? JSON.parse(raw) as BookmarkedArt[] : defaultBookmarks;
+    } catch {
+      return defaultBookmarks;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarkedArtworks));
+    } catch {}
+  }, [bookmarkedArtworks]);
+
   const categories = ['all', ...new Set(bookmarkedArtworks.map(art => art.category))];
 
   const filteredArtworks = bookmarkedArtworks.filter(art => {
@@ -118,8 +133,7 @@ export default function Bookmarks() {
   });
 
   const handleRemoveBookmark = (artId: string) => {
-    console.log('Removing bookmark:', artId);
-    // In a real app, this would update the state/database
+    setBookmarkedArtworks((prev) => prev.filter((art) => art.id !== artId));
   };
 
   const handleShare = (art: BookmarkedArt) => {
@@ -149,7 +163,7 @@ export default function Bookmarks() {
             Back
           </Button>
           <div className="flex items-center gap-2">
-            <Heart className="h-6 w-6 text-primary" />
+            <Bookmark className="h-6 w-6 text-primary" />
             <h1 className="text-3xl font-bold">My Bookmarks</h1>
           </div>
         </div>

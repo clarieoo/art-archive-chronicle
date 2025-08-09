@@ -14,7 +14,8 @@ import {
   MessageSquare,
   GraduationCap,
   X,
-  Image
+  Image,
+  Bookmark
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -128,12 +129,12 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
 
                     {userRole === 'visitor' && (
                       <Link 
-                        to="/watched-later" 
+                        to="/bookmarks" 
                         onClick={handleItemClick}
                         className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
                       >
-                        <Heart className="h-5 w-5" />
-                        <span>Watched Later</span>
+                        <Bookmark className="h-5 w-5" />
+                        <span>My Bookmarks</span>
                       </Link>
                     )}
                   </div>
