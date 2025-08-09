@@ -174,15 +174,16 @@ export const ReviewArts = () => {
             <TableCell>{getStatusBadge(art.status)}</TableCell>
             <TableCell>
               <div className="flex space-x-2">
-                <Dialog>
+                <Dialog onOpenChange={(open) => {
+                  if (open) {
+                    setSelectedArt(art);
+                    setSelectedImageIndex(0);
+                  }
+                }}>
                   <DialogTrigger asChild>
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => {
-                        setSelectedArt(art);
-                        setSelectedImageIndex(0); // Reset image index when opening dialog
-                      }}
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View Details
