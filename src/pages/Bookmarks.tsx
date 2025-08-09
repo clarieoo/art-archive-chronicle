@@ -17,7 +17,8 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+ } from '@/components/ui/dropdown-menu';
+import { ArtCard } from '@/components/gallery/ArtCard';
 
 interface BookmarkedArt {
   id: string;
@@ -122,6 +123,10 @@ export default function Bookmarks() {
     } catch {}
   }, [bookmarkedArtworks]);
 
+  useEffect(() => {
+    document.title = 'My Bookmarks | Art Gallery';
+  }, []);
+
   const categories = ['all', ...new Set(bookmarkedArtworks.map(art => art.category))];
 
   const filteredArtworks = bookmarkedArtworks.filter(art => {
@@ -149,6 +154,11 @@ export default function Bookmarks() {
     }
   };
 
+  const handleToggleBookmark = (artId: string) => {
+    // Toggle bookmark behaves as unsave for existing bookmarks
+    setBookmarkedArtworks((prev) => prev.filter((art) => art.id !== artId));
+  };
+ 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -225,65 +235,18 @@ export default function Bookmarks() {
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredArtworks.map((art) => (
-              <Card key={art.id} className="group hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <img
-                      src={art.imageUrl}
-                      alt={art.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
-                    />
-                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
-                            •••
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem onClick={() => handleShare(art)}>
-                            <Share2 className="h-4 w-4 mr-2" />
-                            Share
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => handleRemoveBookmark(art.id)}
-                            className="text-destructive"
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Remove
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-1">{art.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-2">{art.artist}</p>
-                    <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
-                      {art.description}
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {art.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {art.tags.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{art.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <div className="flex justify-between items-center text-xs text-muted-foreground">
-                      <span>{art.period}</span>
-                      <span>Saved {art.dateBookmarked}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <ArtCard
+                key={art.id}
+                id={art.id}
+                title={art.title}
+                artist={art.artist}
+                period={art.period}
+                image={art.imageUrl}
+                rating={0}
+                totalRatings={0}
+                isWatchLater={true}
+                onToggleWatchLater={handleToggleBookmark}
+              />
             ))}
           </div>
         ) : (
@@ -299,33 +262,40 @@ export default function Bookmarks() {
                     />
                     
                     <div className="flex-1">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="font-semibold text-lg">{art.title}</h3>
-                          <p className="text-muted-foreground">{art.artist}</p>
-                        </div>
-                        
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button size="sm" variant="ghost">
-                              •••
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h3 className="font-semibold text-lg">{art.title}</h3>
+                            <p className="text-muted-foreground">{art.artist}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm" onClick={() => navigate(`/artwork/${art.id}`)}>
+                              View
                             </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem onClick={() => handleShare(art)}>
-                              <Share2 className="h-4 w-4 mr-2" />
-                              Share
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              onClick={() => handleRemoveBookmark(art.id)}
-                              className="text-destructive"
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Remove
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                            <Button variant="default" size="sm" onClick={() => handleToggleBookmark(art.id)}>
+                              Unsave
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button size="sm" variant="ghost">
+                                  •••
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem onClick={() => handleShare(art)}>
+                                  <Share2 className="h-4 w-4 mr-2" />
+                                  Share
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  onClick={() => handleRemoveBookmark(art.id)}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Remove
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
                       
                       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                         {art.description}
