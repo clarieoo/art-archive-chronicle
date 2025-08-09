@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 
@@ -175,15 +175,18 @@ export const ReviewArts = () => {
             <TableCell>
               <div className="flex space-x-2">
                 <Dialog onOpenChange={(open) => {
+                  console.log('Dialog onOpenChange:', open, 'Art:', art.title);
                   if (open) {
                     setSelectedArt(art);
                     setSelectedImageIndex(0);
+                    console.log('Set selectedArt:', art.title);
                   }
                 }}>
                   <DialogTrigger asChild>
                     <Button 
                       variant="outline" 
                       size="sm"
+                      onClick={() => console.log('View Details clicked for:', art.title)}
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View Details
@@ -192,9 +195,13 @@ export const ReviewArts = () => {
                   <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Artwork Details</DialogTitle>
+                      <DialogDescription>
+                        View detailed information about the artwork submission
+                      </DialogDescription>
                     </DialogHeader>
-                    {selectedArt && (
+                    {selectedArt ? (
                       <div className="space-y-6">
+                        <p className="text-sm text-muted-foreground">Showing details for: {selectedArt.title}</p>
                         {/* Images Gallery */}
                         <div className="space-y-4">
                           <h4 className="font-semibold">Artwork Images</h4>
@@ -310,6 +317,10 @@ export const ReviewArts = () => {
                             </div>
                           </div>
                         </div>
+                      </div>
+                    ) : (
+                      <div className="p-4 text-center text-muted-foreground">
+                        No artwork selected
                       </div>
                     )}
                   </DialogContent>
