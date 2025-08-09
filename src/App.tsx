@@ -20,7 +20,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ViewProfile from "./pages/profile/ViewProfile";
 import EditProfile from "./pages/profile/EditProfile";
 import UpgradeCurator from "./pages/UpgradeCurator";
-import WatchedLater from "./pages/WatchedLater";
+
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import CuratorDashboard from "./pages/dashboard/CuratorDashboard";
@@ -63,7 +63,7 @@ const App = () => (
               <Route path="profile/edit" element={<EditProfile />} />
               <Route path="upgrade-curator" element={<UpgradeCurator />} />
               <Route path="bookmarks" element={<Bookmarks />} />
-              <Route path="watched-later" element={<WatchedLater />} />
+              <Route path="watched-later" element={<Bookmarks />} />
               <Route path="visitor" element={<VisitorPage />} />
             </Route>
 

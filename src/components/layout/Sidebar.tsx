@@ -126,7 +126,7 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       <span>Change Password</span>
                     </Link>
 
-                    {userRole !== 'admin' && (
+                    {userRole === 'visitor' && (
                       <Link 
                         to="/watched-later" 
                         onClick={handleItemClick}

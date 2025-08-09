@@ -121,8 +121,8 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
                   </Link>
                 </Button>
                 
-                {/* Watched Later (for visitors/curators) */}
-                {(userRole === 'visitor' || userRole === 'curator') && (
+                {/* Watched Later (visitor only) */}
+                {userRole === 'visitor' && (
                   <Button variant="ghost" size="sm" asChild>
                     <Link to="/watched-later">
                       <Heart className="h-4 w-4" />
