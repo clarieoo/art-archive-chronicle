@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, User, Star, Heart, Search, Bell, Clock, ExternalLink } from 'lucide-react';
+import { Menu, User, Star, Heart, Search, Bell, Clock, ExternalLink, Bookmark } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
@@ -114,6 +114,13 @@ export const Navbar = ({ onMenuClick, isAuthenticated = false, userRole = 'visit
               </div>
             ) : (
               <div className="flex items-center space-x-3">
+                {/* Bookmarks */}
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/bookmarks">
+                    <Bookmark className="h-4 w-4" />
+                  </Link>
+                </Button>
+                
                 {/* Watched Later (for visitors/curators) */}
                 {(userRole === 'visitor' || userRole === 'curator') && (
                   <Button variant="ghost" size="sm" asChild>

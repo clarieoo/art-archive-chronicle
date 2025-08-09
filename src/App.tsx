@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Bookmarks from "./pages/Bookmarks";
 import { Layout } from "./components/layout/Layout";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import Index from "./pages/Index";
@@ -61,6 +62,7 @@ const App = () => (
               <Route path="profile" element={<ViewProfile />} />
               <Route path="profile/edit" element={<EditProfile />} />
               <Route path="upgrade-curator" element={<UpgradeCurator />} />
+              <Route path="bookmarks" element={<Bookmarks />} />
               <Route path="watched-later" element={<WatchedLater />} />
               <Route path="visitor" element={<VisitorPage />} />
             </Route>
