@@ -181,18 +181,19 @@ export const ReviewArts = () => {
                       onClick={() => setSelectedArt(art)}
                     >
                       <Eye className="h-4 w-4 mr-1" />
-                      Review
+                      View Details
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl">
+                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
-                      <DialogTitle>Review Artwork</DialogTitle>
+                      <DialogTitle>Artwork Details</DialogTitle>
                     </DialogHeader>
                     {selectedArt && (
-                      <div className="space-y-4">
+                      <div className="space-y-6">
                         {/* Images Gallery */}
-                        <div className="space-y-2">
-                          <div className="aspect-video w-full overflow-hidden rounded-lg">
+                        <div className="space-y-4">
+                          <h4 className="font-semibold">Artwork Images</h4>
+                          <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
                             <img 
                               src={selectedArt.images[0]} 
                               alt={selectedArt.title}
@@ -206,49 +207,120 @@ export const ReviewArts = () => {
                                   key={index}
                                   src={image} 
                                   alt={`${selectedArt.title} ${index + 2}`}
-                                  className="w-full h-16 object-cover rounded"
+                                  className="w-full h-20 object-cover rounded"
                                 />
                               ))}
                             </div>
                           )}
                         </div>
 
-                        {/* Artwork Details */}
-                        <div className="space-y-4">
-                          <h3 className="text-lg font-semibold">{selectedArt.title}</h3>
-                          <p className="text-muted-foreground">{selectedArt.description}</p>
-                          
-                          <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div><strong>Curator:</strong> {selectedArt.curator}</div>
-                            <div><strong>Category:</strong> {selectedArt.category}</div>
-                            <div><strong>Dimension:</strong> {selectedArt.dimension}</div>
-                            <div><strong>Department:</strong> {selectedArt.department}</div>
-                            <div><strong>Culture:</strong> {selectedArt.culture}</div>
-                            <div><strong>Period:</strong> {selectedArt.period}</div>
-                            <div><strong>Found Date:</strong> {selectedArt.foundDate}</div>
-                            <div><strong>Location:</strong> {selectedArt.location}</div>
-                          </div>
-                          
-                          {selectedArt.tags && (
-                            <div className="text-sm">
-                              <strong>Tags:</strong> {selectedArt.tags}
+                        {/* Basic Information */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Title</label>
+                              <p className="text-lg font-semibold">{selectedArt.title}</p>
                             </div>
-                          )}
-                          
-                          <div className="text-sm text-muted-foreground">
-                            <strong>Submitted:</strong> {selectedArt.submittedDate}
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Description</label>
+                              <p className="text-sm">{selectedArt.description}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Dimension</label>
+                              <p className="text-sm">{selectedArt.dimension}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Category</label>
+                              <p className="text-sm">{selectedArt.category}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Tags</label>
+                              <p className="text-sm">{selectedArt.tags}</p>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Culture</label>
+                              <p className="text-sm">{selectedArt.culture}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Department</label>
+                              <p className="text-sm">{selectedArt.department}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Period</label>
+                              <p className="text-sm">{selectedArt.period}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Exact Found Date</label>
+                              <p className="text-sm">{selectedArt.foundDate}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Location</label>
+                              <p className="text-sm">{selectedArt.location}</p>
+                            </div>
                           </div>
                         </div>
-                        
-                        {selectedArt.status === 'pending' && (
+
+                        {/* Submission Information */}
+                        <div className="border-t pt-4">
+                          <h4 className="font-semibold mb-4">Submission Information</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Curator</label>
+                              <p>{selectedArt.curator}</p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Submitted Date</label>
+                              <p>{selectedArt.submittedDate}</p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Status</label>
+                              <div className="mt-1">{getStatusBadge(selectedArt.status)}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </DialogContent>
+                </Dialog>
+
+                {/* Approve/Reject buttons for pending items */}
+                {art.status === 'pending' && (
+                  <>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="sm"
+                          onClick={() => setSelectedArt(art)}
+                        >
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          Approve
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Approve Artwork</DialogTitle>
+                        </DialogHeader>
+                        {selectedArt && (
                           <div className="space-y-4">
+                            <p>Are you sure you want to approve "{selectedArt.title}" by {selectedArt.curator}?</p>
                             <div className="space-y-2">
-                              <Label htmlFor="comment">Review Comment</Label>
+                              <Label htmlFor="approveComment">Approval Comment (Optional)</Label>
                               <Textarea
-                                id="comment"
+                                id="approveComment"
                                 value={comment}
                                 onChange={(e) => setComment(e.target.value)}
-                                placeholder="Add your review comment here..."
+                                placeholder="Add your approval comment here..."
                                 rows={3}
                               />
                             </div>
@@ -258,23 +330,60 @@ export const ReviewArts = () => {
                                 className="flex-1"
                               >
                                 <CheckCircle className="h-4 w-4 mr-2" />
-                                Approve
-                              </Button>
-                              <Button 
-                                variant="destructive"
-                                onClick={() => handleReject(selectedArt.id)}
-                                className="flex-1"
-                              >
-                                <X className="h-4 w-4 mr-2" />
-                                Reject
+                                Confirm Approval
                               </Button>
                             </div>
                           </div>
                         )}
-                      </div>
-                    )}
-                  </DialogContent>
-                </Dialog>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => setSelectedArt(art)}
+                        >
+                          <X className="h-4 w-4 mr-1" />
+                          Reject
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Reject Artwork</DialogTitle>
+                        </DialogHeader>
+                        {selectedArt && (
+                          <div className="space-y-4">
+                            <p>Are you sure you want to reject "{selectedArt.title}" by {selectedArt.curator}?</p>
+                            <div className="space-y-2">
+                              <Label htmlFor="rejectComment">Rejection Reason (Required)</Label>
+                              <Textarea
+                                id="rejectComment"
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                placeholder="Please provide a reason for rejection..."
+                                rows={3}
+                                required
+                              />
+                            </div>
+                            <div className="flex space-x-2">
+                              <Button 
+                                variant="destructive"
+                                onClick={() => handleReject(selectedArt.id)}
+                                className="flex-1"
+                                disabled={!comment.trim()}
+                              >
+                                <X className="h-4 w-4 mr-2" />
+                                Confirm Rejection
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </DialogContent>
+                    </Dialog>
+                  </>
+                )}
               </div>
             </TableCell>
           </TableRow>
