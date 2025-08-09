@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Heart, Search, Filter, Grid, List, Share2, Trash2, Bookmark } from 'lucide-react';
+import { ArrowLeft, Heart, Filter, Grid, List, Share2, Trash2, Bookmark } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+
 import { Badge } from '@/components/ui/badge';
 import { 
   Select, 
@@ -180,16 +180,6 @@ export default function Bookmarks() {
 
         {/* Search and Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search bookmarks by title, artist, or tags..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
           <div className="flex gap-2">
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-[180px]">
