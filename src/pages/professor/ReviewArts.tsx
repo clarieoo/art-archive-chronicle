@@ -32,6 +32,7 @@ export const ReviewArts = () => {
   const navigate = useNavigate();
   const [selectedArt, setSelectedArt] = useState<ArtSubmission | null>(null);
   const [comment, setComment] = useState('');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // Mock data - replace with actual API call
   const artSubmissions: ArtSubmission[] = [
@@ -193,20 +194,33 @@ export const ReviewArts = () => {
                         <h4 className="font-semibold">Artwork Images</h4>
                         <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
                           <img 
-                            src={art.images[0]} 
+                            src={art.images[selectedImageIndex || 0]} 
                             alt={art.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover cursor-pointer"
+                            onClick={() => window.open(art.images[selectedImageIndex || 0], '_blank')}
                           />
                         </div>
                         {art.images.length > 1 && (
                           <div className="grid grid-cols-4 gap-2">
-                            {art.images.slice(1).map((image, index) => (
-                              <img 
+                            {art.images.map((image, index) => (
+                              <div
                                 key={index}
-                                src={image} 
-                                alt={`${art.title} ${index + 2}`}
-                                className="w-full h-20 object-cover rounded"
-                              />
+                                className={`cursor-pointer group relative overflow-hidden rounded border-2 transition-all duration-300 ${
+                                  (selectedImageIndex || 0) === index 
+                                    ? 'border-primary shadow-lg' 
+                                    : 'border-transparent hover:border-muted-foreground/30'
+                                }`}
+                                onClick={() => setSelectedImageIndex(index)}
+                              >
+                                <img 
+                                  src={image} 
+                                  alt={`${art.title} view ${index + 1}`}
+                                  className="w-full h-20 object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                                {(selectedImageIndex || 0) === index && (
+                                  <div className="absolute inset-0 bg-primary/10 pointer-events-none" />
+                                )}
+                              </div>
                             ))}
                           </div>
                         )}
