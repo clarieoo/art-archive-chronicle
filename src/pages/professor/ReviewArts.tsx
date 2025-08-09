@@ -298,6 +298,7 @@ export const ReviewArts = () => {
                       <DialogTrigger asChild>
                         <Button 
                           size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => setSelectedArt(art)}
                         >
                           <CheckCircle className="h-4 w-4 mr-1" />

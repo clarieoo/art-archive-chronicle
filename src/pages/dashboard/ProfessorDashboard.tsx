@@ -99,49 +99,82 @@ export default function ProfessorDashboard() {
           </Card>
         </div>
 
-        {/* Pending Artworks */}
+        {/* Professor Functions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-yellow-600" />
-                Pending Artworks
+                <Eye className="h-5 w-5 text-primary" />
+                Review Artworks
               </CardTitle>
-              <CardDescription>Artworks awaiting your review and decision</CardDescription>
+              <CardDescription>Review and approve curator submissions</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {pendingArtworks.map((artwork) => (
-                  <div key={artwork.id} className="p-4 bg-surface/50 rounded-lg border border-border/30">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium">{artwork.title}</h4>
-                      <Badge variant={artwork.priority === 'high' ? 'destructive' : artwork.priority === 'medium' ? 'default' : 'secondary'}>
-                        {artwork.priority}
-                      </Badge>
+                <p className="text-sm text-muted-foreground">
+                  View and manage artwork submissions from curators. Approve or reject artworks with detailed feedback.
+                </p>
+                <div className="grid grid-cols-5 gap-2 mb-4">
+                  {[
+                    '/src/assets/sample-art-1.jpg',
+                    '/src/assets/sample-art-2.jpg',
+                    '/src/assets/sample-art-3.jpg',
+                    '/src/assets/sample-art-4.jpg',
+                    '/src/assets/sample-art-5.jpg'
+                  ].map((image, index) => (
+                    <div key={index} className="aspect-square overflow-hidden rounded-lg border">
+                      <img 
+                        src={image} 
+                        alt={`Sample artwork ${index + 1}`}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer"
+                        onClick={() => window.open(`/artwork/${index + 1}`, '_blank')}
+                      />
                     </div>
-                    <p className="text-sm text-muted-foreground mb-1">Curator: {artwork.curator}</p>
-                    <p className="text-sm text-muted-foreground mb-1">Category: {artwork.category}</p>
-                    <p className="text-sm text-muted-foreground mb-3">Submitted: {artwork.submittedDate}</p>
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        <CheckCircle className="h-4 w-4 mr-1" />
-                        Approve
-                      </Button>
-                      <Button size="sm" variant="destructive" className="flex-1">
-                        <XCircle className="h-4 w-4 mr-1" />
-                        Reject
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4">
+                  ))}
+                </div>
                 <Link to="/professor/review">
+                  <Button className="w-full">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Review Submissions ({stats.pending})
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                Curator Applications
+              </CardTitle>
+              <CardDescription>Review upgrade requests to curator status</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Review and approve visitor applications to become curators. Check their qualifications and submissions.
+                </p>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center p-3 bg-surface/50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">John Doe</p>
+                      <p className="text-xs text-muted-foreground">Art History Student</p>
+                    </div>
+                    <Badge variant="secondary">Pending</Badge>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-surface/50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-sm">Sarah Johnson</p>
+                      <p className="text-xs text-muted-foreground">Museum Assistant</p>
+                    </div>
+                    <Badge variant="secondary">Pending</Badge>
+                  </div>
+                </div>
+                <Link to="/professor/curator-applications">
                   <Button variant="outline" className="w-full">
-                    View All Pending ({stats.pending})
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Review Applications (5)
                   </Button>
                 </Link>
               </div>
