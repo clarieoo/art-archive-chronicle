@@ -193,123 +193,125 @@ export const ReviewArts = () => {
                     <DialogHeader>
                       <DialogTitle>Artwork Details</DialogTitle>
                     </DialogHeader>
-                    <div className="space-y-6">
-                      {/* Images Gallery */}
-                      <div className="space-y-4">
-                        <h4 className="font-semibold">Artwork Images</h4>
-                        <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
-                          <img 
-                            src={art.images[selectedImageIndex] || art.images[0]} 
-                            alt={art.title}
-                            className="w-full h-full object-cover cursor-pointer"
-                            onClick={() => {
-                              const imageUrl = art.images[selectedImageIndex] || art.images[0];
-                              window.open(imageUrl, '_blank');
-                            }}
-                          />
-                        </div>
-                        {art.images.length > 1 && (
-                          <div className="grid grid-cols-4 gap-2">
-                            {art.images.map((image, index) => (
-                              <div
-                                key={index}
-                                className={`cursor-pointer group relative overflow-hidden rounded border-2 transition-all duration-300 ${
-                                  selectedImageIndex === index 
-                                    ? 'border-primary shadow-lg' 
-                                    : 'border-transparent hover:border-muted-foreground/30'
-                                }`}
-                                onClick={() => setSelectedImageIndex(index)}
-                              >
-                                <img 
-                                  src={image} 
-                                  alt={`${art.title} view ${index + 1}`}
-                                  className="w-full h-20 object-cover transition-transform duration-300 group-hover:scale-105"
-                                />
-                                {selectedImageIndex === index && (
-                                  <div className="absolute inset-0 bg-primary/10 pointer-events-none" />
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Basic Information */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {selectedArt && (
+                      <div className="space-y-6">
+                        {/* Images Gallery */}
                         <div className="space-y-4">
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Title</label>
-                            <p className="text-lg font-semibold">{art.title}</p>
+                          <h4 className="font-semibold">Artwork Images</h4>
+                          <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
+                            <img 
+                              src={selectedArt.images[selectedImageIndex] || selectedArt.images[0]} 
+                              alt={selectedArt.title}
+                              className="w-full h-full object-cover cursor-pointer"
+                              onClick={() => {
+                                const imageUrl = selectedArt.images[selectedImageIndex] || selectedArt.images[0];
+                                window.open(imageUrl, '_blank');
+                              }}
+                            />
                           </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Description</label>
-                            <p className="text-sm">{art.description}</p>
+                          {selectedArt.images.length > 1 && (
+                            <div className="grid grid-cols-4 gap-2">
+                              {selectedArt.images.map((image, index) => (
+                                <div
+                                  key={index}
+                                  className={`cursor-pointer group relative overflow-hidden rounded border-2 transition-all duration-300 ${
+                                    selectedImageIndex === index 
+                                      ? 'border-primary shadow-lg' 
+                                      : 'border-transparent hover:border-muted-foreground/30'
+                                  }`}
+                                  onClick={() => setSelectedImageIndex(index)}
+                                >
+                                  <img 
+                                    src={image} 
+                                    alt={`${selectedArt.title} view ${index + 1}`}
+                                    className="w-full h-20 object-cover transition-transform duration-300 group-hover:scale-105"
+                                  />
+                                  {selectedImageIndex === index && (
+                                    <div className="absolute inset-0 bg-primary/10 pointer-events-none" />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Basic Information */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Title</label>
+                              <p className="text-lg font-semibold">{selectedArt.title}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Description</label>
+                              <p className="text-sm">{selectedArt.description}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Dimension</label>
+                              <p className="text-sm">{selectedArt.dimension}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Category</label>
+                              <p className="text-sm">{selectedArt.category}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Tags</label>
+                              <p className="text-sm">{selectedArt.tags}</p>
+                            </div>
                           </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Dimension</label>
-                            <p className="text-sm">{art.dimension}</p>
-                          </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Category</label>
-                            <p className="text-sm">{art.category}</p>
-                          </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Tags</label>
-                            <p className="text-sm">{art.tags}</p>
+
+                          <div className="space-y-4">
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Culture</label>
+                              <p className="text-sm">{selectedArt.culture}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Department</label>
+                              <p className="text-sm">{selectedArt.department}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Period</label>
+                              <p className="text-sm">{selectedArt.period}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Exact Found Date</label>
+                              <p className="text-sm">{selectedArt.foundDate}</p>
+                            </div>
+                            
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Location</label>
+                              <p className="text-sm">{selectedArt.location}</p>
+                            </div>
                           </div>
                         </div>
 
-                        <div className="space-y-4">
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Culture</label>
-                            <p className="text-sm">{art.culture}</p>
-                          </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Department</label>
-                            <p className="text-sm">{art.department}</p>
-                          </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Period</label>
-                            <p className="text-sm">{art.period}</p>
-                          </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Exact Found Date</label>
-                            <p className="text-sm">{art.foundDate}</p>
-                          </div>
-                          
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Location</label>
-                            <p className="text-sm">{art.location}</p>
+                        {/* Submission Information */}
+                        <div className="border-t pt-4">
+                          <h4 className="font-semibold mb-4">Submission Information</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Curator</label>
+                              <p>{selectedArt.curator}</p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Submitted Date</label>
+                              <p>{selectedArt.submittedDate}</p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-muted-foreground">Status</label>
+                              <div className="mt-1">{getStatusBadge(selectedArt.status)}</div>
+                            </div>
                           </div>
                         </div>
                       </div>
-
-                      {/* Submission Information */}
-                      <div className="border-t pt-4">
-                        <h4 className="font-semibold mb-4">Submission Information</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Curator</label>
-                            <p>{art.curator}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Submitted Date</label>
-                            <p>{art.submittedDate}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-muted-foreground">Status</label>
-                            <div className="mt-1">{getStatusBadge(art.status)}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    )}
                   </DialogContent>
                 </Dialog>
 
