@@ -14,28 +14,12 @@ export default function AdminDashboard() {
       color: "text-blue-600"
     },
     {
-      title: "Review Arts",
-      description: "Review and approve submitted artworks",
+      title: "Manage Artworks",
+      description: "Manage and review artwork submissions",
       icon: Image,
       path: "/admin/arts",
       count: "89",
       color: "text-green-600"
-    },
-    {
-      title: "Categories",
-      description: "Manage art categories and classifications",
-      icon: FolderOpen,
-      path: "/admin/categories",
-      count: "12",
-      color: "text-purple-600"
-    },
-    {
-      title: "Reports",
-      description: "View analytics and generate reports",
-      icon: BarChart3,
-      path: "/admin/reports",
-      count: "45",
-      color: "text-orange-600"
     }
   ];
 

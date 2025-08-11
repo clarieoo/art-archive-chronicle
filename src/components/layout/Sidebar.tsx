@@ -180,27 +180,8 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                         className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
                       >
                         <CheckCircle className="h-5 w-5" />
-                        <span>Review Arts</span>
+                        <span>Manage Artworks</span>
                       </Link>
-
-                      <Link 
-                        to="/admin/categories" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <Image className="h-5 w-5" />
-                        <span>Categories</span>
-                      </Link>
-
-                      <Link 
-                        to="/admin/reports" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <BarChart className="h-5 w-5" />
-                        <span>Reports</span>
-                      </Link>
-
                     </div>
                   </div>
                 )}
