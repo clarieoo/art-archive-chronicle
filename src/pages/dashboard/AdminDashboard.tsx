@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Image, FolderOpen, BarChart3, ArrowRight } from "lucide-react";
+import { Users, Image, FolderOpen, BarChart3, ArrowRight, Megaphone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
@@ -20,6 +20,14 @@ export default function AdminDashboard() {
       path: "/admin/arts",
       count: "89",
       color: "text-green-600"
+    },
+    {
+      title: "Make Announcement",
+      description: "Publish updates, events, or maintenance",
+      icon: Megaphone,
+      path: "/admin/announcements/new",
+      count: "",
+      color: "text-purple-600"
     }
   ];
 

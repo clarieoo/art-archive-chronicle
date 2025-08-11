@@ -15,7 +15,8 @@ import {
   GraduationCap,
   X,
   Image,
-  Bookmark
+  Bookmark,
+  Megaphone
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -181,6 +182,15 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       >
                         <CheckCircle className="h-5 w-5" />
                         <span>Manage Artworks</span>
+                      </Link>
+
+                      <Link 
+                        to="/admin/announcements/new" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Megaphone className="h-5 w-5" />
+                        <span>Make Announcement</span>
                       </Link>
                     </div>
                   </div>

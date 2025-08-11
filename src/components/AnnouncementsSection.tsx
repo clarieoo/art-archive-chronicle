@@ -1,5 +1,6 @@
 import { Calendar, Megaphone, Video, Wrench } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 export type Announcement = {
   id: string;
@@ -13,30 +14,43 @@ export type Announcement = {
 const announcements: Announcement[] = [
   {
     id: "maint-2025-08-15",
-    title: "Scheduled Maintenance – August 15, 02:00–03:00 UTC",
+    title: "Scheduled Maintenance – Aug 15, 02:00–03:00 UTC",
     date: "2025-08-15T02:00:00.000Z",
     type: "maintenance",
     summary:
-      "We'll perform routine database upgrades to keep things fast and secure. Downtime may last up to 10 minutes during the window.",
-    link: { href: "/about#status", label: "Status details" },
+      "We’ll upgrade databases and apply security patches. Brief downtime (up to 10 minutes) may occur during the window.",
   },
   {
     id: "feature-adv-search",
-    title: "New: Advanced Search with Filters and Ratings",
+    title: "Advanced Search: Filter by Period, Category, Rating",
     date: "2025-08-05T10:00:00.000Z",
     type: "feature",
     summary:
-      "Find artworks faster with period, category, and rating filters. You can also sort by popularity or recency.",
-    link: { href: "/gallery", label: "Try it now" },
+      "Quickly find artworks using period/category filters and sort by popularity or recency for better discovery.",
   },
   {
     id: "event-webinar-01",
-    title: "Community Webinar: Curating Renaissance Art",
+    title: "Webinar: Curating Renaissance Masterpieces",
     date: "2025-08-20T17:00:00.000Z",
     type: "event",
     summary:
-      "Join our live session with guest historians on best practices for digital curation and storytelling.",
-    link: { href: "/contact", label: "Register free" },
+      "Join historians for a live session on digital curation workflows and storytelling best practices.",
+  },
+  {
+    id: "feature-mobile-ui",
+    title: "Improved Mobile UI: Faster, Smoother Browsing",
+    date: "2025-08-10T08:00:00.000Z",
+    type: "feature",
+    summary:
+      "We refined navigation and image loading on phones and tablets to make exploring the gallery feel effortless.",
+  },
+  {
+    id: "event-community-challenge",
+    title: "Community Challenge: Baroque Highlights Week",
+    date: "2025-08-25T12:00:00.000Z",
+    type: "event",
+    summary:
+      "Share your favorite Baroque pieces, vote on submissions, and celebrate dramatic light and movement.",
   },
 ];
 
@@ -106,34 +120,31 @@ export function AnnouncementsSection() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {announcements.map((a) => (
-            <Card key={a.id} className="hover:shadow-elegant transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  {typeBadge(a.type)}
-                  <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" aria-hidden="true" />
-                    {formatDate(a.date)}
-                  </span>
-                </div>
-                <CardTitle className="text-xl mt-2">{a.title}</CardTitle>
-                <CardDescription>{a.summary}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {a.link && (
-                  <a
-                    href={a.link.href}
-                    className="text-primary hover:underline font-medium"
-                    aria-label={`${a.link.label}: ${a.title}`}
-                  >
-                    {a.link.label}
-                  </a>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <Carousel className="w-full max-w-3xl mx-auto">
+          <CarouselContent>
+            {announcements.map((a) => (
+              <CarouselItem key={a.id} className="basis-full">
+                <Card className="hover:shadow-elegant transition-all duration-300 animate-fade-in">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      {typeBadge(a.type)}
+                      <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4" aria-hidden="true" />
+                        {formatDate(a.date)}
+                      </span>
+                    </div>
+                    <CardTitle className="text-xl mt-2">{a.title}</CardTitle>
+                    <CardDescription>{a.summary}</CardDescription>
+                  </CardHeader>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="flex items-center justify-between mt-6">
+            <CarouselPrevious aria-label="Previous announcement" />
+            <CarouselNext aria-label="Next announcement" />
+          </div>
+        </Carousel>
 
         <script
           type="application/ld+json"

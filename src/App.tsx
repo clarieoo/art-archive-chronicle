@@ -29,6 +29,7 @@ import ManageUsers from "./pages/admin/ManageUsers";
 import ReviewArts from "./pages/admin/ReviewArts";
 import Categories from "./pages/admin/Categories";
 import Reports from "./pages/admin/Reports";
+import MakeAnnouncement from "./pages/admin/MakeAnnouncement";
 import CuratorApplications from "./pages/professor/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
 import { ManageArtworks } from "./pages/curator/ManageArtworks";
@@ -75,6 +76,7 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="users" element={<ManageUsers />} />
               <Route path="arts" element={<ReviewArts />} />
+              <Route path="announcements/new" element={<MakeAnnouncement />} />
               <Route path="categories" element={<Categories />} />
               <Route path="reports" element={<Reports />} />
             </Route>
