@@ -1,7 +1,7 @@
 import { Calendar, Megaphone, Video, Wrench } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-
+import Autoplay from "embla-carousel-autoplay";
 export type Announcement = {
   id: string;
   title: string;
@@ -120,7 +120,7 @@ export function AnnouncementsSection() {
           </p>
         </header>
 
-        <Carousel className="w-full max-w-3xl mx-auto">
+        <Carousel className="w-full max-w-3xl mx-auto" opts={{ loop: true, align: "start" }} plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}>
           <CarouselContent>
             {announcements.map((a) => (
               <CarouselItem key={a.id} className="basis-full">

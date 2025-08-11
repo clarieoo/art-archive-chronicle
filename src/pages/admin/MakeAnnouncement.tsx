@@ -22,6 +22,8 @@ const AnnouncementSchema = z.object({
   time: z.string().regex(/^\d{2}:\d{2}$/g, "Use 24h format HH:MM"),
   summary: z.string().min(10, "Please add a short description"),
   tags: z.string().optional(),
+  linkLabel: z.string().optional(),
+  linkUrl: z.string().url("Enter a valid URL").optional(),
 });
 
 type AnnouncementForm = z.infer<typeof AnnouncementSchema>;
@@ -36,8 +38,12 @@ export default function MakeAnnouncement() {
       time: new Date().toLocaleTimeString([], { hour12: false, hour: "2-digit", minute: "2-digit" }),
       summary: "",
       tags: "",
+      linkLabel: "",
+      linkUrl: "",
     },
   });
+
+  const watch = form.watch();
 
   React.useEffect(() => {
     document.title = "Make Announcement | Admin";
@@ -55,6 +61,7 @@ export default function MakeAnnouncement() {
       ...values,
       dateTimeISO: scheduled.toISOString(),
       tags: values.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [],
+      link: values.linkUrl ? { href: values.linkUrl, label: values.linkLabel || "Learn more" } : undefined,
     };
 
     console.log("Announcement payload (demo only):", payload);
@@ -195,6 +202,38 @@ export default function MakeAnnouncement() {
               )}
             />
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="linkLabel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Link Label (optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., Learn more" {...field} />
+                    </FormControl>
+                    <FormDescription>Text shown on the link to more details.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="linkUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Link URL (optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://example.com/post" {...field} />
+                    </FormControl>
+                    <FormDescription>Where users can read the full announcement.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <div className="flex items-center justify-end gap-3">
               <Button type="button" variant="outline" onClick={() => form.reset()}>
                 Reset
@@ -204,6 +243,24 @@ export default function MakeAnnouncement() {
               </Button>
             </div>
           </form>
+          <aside className="mt-8">
+            <div className="rounded-xl border bg-muted/20 p-5">
+              <p className="text-sm font-medium text-muted-foreground mb-2">Live preview</p>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-primary capitalize">{watch.type}</span>
+                  <span className="text-xs text-muted-foreground">{watch.date ? format(watch.date, "PP") : "Pick a date"} {watch.time}</span>
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">{watch.title || "Your announcement title"}</h3>
+                <p className="text-sm text-muted-foreground">{watch.summary || "A brief description will appear here."}</p>
+                {watch.linkUrl && (
+                  <a href={watch.linkUrl} className="story-link inline-flex items-center text-sm mt-2" target="_blank" rel="noreferrer">
+                    {watch.linkLabel || "Learn more"}
+                  </a>
+                )}
+              </div>
+            </div>
+          </aside>
         </Form>
       </div>
 

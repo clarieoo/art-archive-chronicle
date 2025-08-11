@@ -43,7 +43,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 mb-10">
           {dashboardItems.map((item) => {
             const IconComponent = item.icon;
             return (
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
                   </p>
                   <Link to={item.path}>
                     <Button variant="outline" size="sm" className="w-full group">
-                      Manage
+                      {item.title.startsWith("Make") ? "Make" : "Manage"}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>

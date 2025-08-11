@@ -27,8 +27,6 @@ import CuratorDashboard from "./pages/dashboard/CuratorDashboard";
 import ProfessorDashboard from "./pages/dashboard/ProfessorDashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ReviewArts from "./pages/admin/ReviewArts";
-import Categories from "./pages/admin/Categories";
-import Reports from "./pages/admin/Reports";
 import MakeAnnouncement from "./pages/admin/MakeAnnouncement";
 import CuratorApplications from "./pages/professor/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
@@ -64,7 +62,7 @@ const App = () => (
               <Route path="profile/edit" element={<EditProfile />} />
               <Route path="upgrade-curator" element={<UpgradeCurator />} />
               <Route path="bookmarks" element={<Bookmarks />} />
-              <Route path="watched-later" element={<Bookmarks />} />
+              
               <Route path="visitor" element={<VisitorPage />} />
             </Route>
 
@@ -77,8 +75,6 @@ const App = () => (
               <Route path="users" element={<ManageUsers />} />
               <Route path="arts" element={<ReviewArts />} />
               <Route path="announcements/new" element={<MakeAnnouncement />} />
-              <Route path="categories" element={<Categories />} />
-              <Route path="reports" element={<Reports />} />
             </Route>
 
             {/* Professor Dashboard Routes */}
