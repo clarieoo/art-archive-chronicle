@@ -11,7 +11,7 @@ export type Announcement = {
   link?: { href: string; label: string };
 };
 
-const announcements: Announcement[] = [
+export const announcements: Announcement[] = [
   {
     id: "maint-2025-08-15",
     title: "Scheduled Maintenance – Aug 15, 02:00–03:00 UTC",

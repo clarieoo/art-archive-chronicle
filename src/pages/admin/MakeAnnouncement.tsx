@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { Megaphone, Calendar as CalendarIcon, Type, FileText, Tags } from "lucide-react";
+import { Megaphone, Calendar as CalendarIcon, Type, FileText, Tags, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,11 +75,20 @@ export default function MakeAnnouncement() {
   return (
     <main className="p-6">
       <div className="max-w-3xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 inline-flex items-center gap-3">
-            <Megaphone className="h-8 w-8 text-primary" /> Make Announcement
-          </h1>
-          <p className="text-muted-foreground">Notify users about product updates, events, and maintenance.</p>
+        <header className="mb-8">
+          <div className="mb-3">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/admin">
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Admin
+              </Link>
+            </Button>
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 inline-flex items-center gap-3">
+              <Megaphone className="h-8 w-8 text-primary" /> Make Announcement
+            </h1>
+            <p className="text-muted-foreground">Notify users about product updates, events, and maintenance.</p>
+          </div>
         </header>
 
         <Form {...form}>
@@ -98,7 +108,7 @@ export default function MakeAnnouncement() {
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormField
                 control={form.control}
                 name="type"
@@ -122,54 +132,52 @@ export default function MakeAnnouncement() {
                 )}
               />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn("justify-start text-left font-normal", !field.value && "text-muted-foreground")}
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            className={cn("p-3 pointer-events-auto")}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn("justify-start text-left font-normal", !field.value && "text-muted-foreground")}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="time"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Time (24h)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="14:00" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Time (24h)</FormLabel>
+                    <FormControl>
+                      <Input type="time" step="60" placeholder="14:00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <FormField

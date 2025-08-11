@@ -2,8 +2,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Users, Image, FolderOpen, BarChart3, ArrowRight, Megaphone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { announcements } from "@/components/AnnouncementsSection";
 
 export default function AdminDashboard() {
+  const announcementsCount = announcements.length.toString();
   const dashboardItems = [
     {
       title: "Manage Users",
@@ -26,7 +28,7 @@ export default function AdminDashboard() {
       description: "Publish updates, events, or maintenance",
       icon: Megaphone,
       path: "/admin/announcements/new",
-      count: "",
+      count: announcementsCount,
       color: "text-purple-600"
     }
   ];
