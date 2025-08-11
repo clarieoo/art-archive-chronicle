@@ -1,173 +1,388 @@
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Search, Eye, CheckCircle, XCircle, MessageSquare } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { ArrowLeft, CheckCircle, Clock, Eye, Trash2, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
+interface ArtSubmission {
+  id: string;
+  title: string;
+  curator: string;
+  category: string;
+  submittedDate: string;
+  status: 'pending' | 'approved' | 'rejected';
+  images: string[];
+  description: string;
+  dimension: string;
+  tags: string;
+  culture: string;
+  department: string;
+  period: string;
+  foundDate?: string;
+  location: string;
+}
 
 export default function ReviewArts() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-  const artworks = [
-    { 
-      id: 1, 
-      title: "Byzantine Icon", 
-      curator: "John Doe", 
-      category: "Religious Art", 
-      status: "pending",
-      submittedDate: "2024-01-20",
-      description: "12th century Byzantine icon depicting...",
-      imageUrl: "/sample-art-1.jpg"
-    },
-    { 
-      id: 2, 
-      title: "Roman Fresco Fragment", 
-      curator: "Jane Smith", 
-      category: "Ancient Art", 
-      status: "approved",
-      submittedDate: "2024-01-19",
-      description: "Well-preserved fresco from Pompeii...",
-      imageUrl: "/sample-art-2.jpg"
-    },
-    { 
-      id: 3, 
-      title: "Medieval Illuminated Manuscript", 
-      curator: "Mike Johnson", 
-      category: "Medieval", 
-      status: "rejected",
-      submittedDate: "2024-01-18",
-      description: "Illuminated manuscript page from...",
-      imageUrl: "/sample-art-3.jpg"
+  // Page SEO
+  useEffect(() => {
+    document.title = 'Admin | Review Art Submissions';
+    const meta = document.querySelector('meta[name="description"]');
+    const content = 'Admin review art submissions dashboard with tabs and details.';
+    if (meta) meta.setAttribute('content', content);
+    else {
+      const m = document.createElement('meta');
+      m.name = 'description';
+      m.content = content;
+      document.head.appendChild(m);
     }
+  }, []);
+
+  // Local state copied from Professor page (with delete support)
+  const initialSubmissions: ArtSubmission[] = [
+    {
+      id: '1',
+      title: 'Abstract Harmony',
+      curator: 'John Smith',
+      category: 'Painting',
+      submittedDate: '2024-01-15',
+      status: 'pending',
+      images: ['/src/assets/sample-art-1.jpg', '/src/assets/sample-art-2.jpg'],
+      description: 'A vibrant abstract painting exploring the harmony between colors and forms.',
+      dimension: '24 x 36 inches',
+      tags: 'abstract, colorful, modern',
+      culture: 'Contemporary Western',
+      department: 'Fine Arts',
+      period: '21st Century',
+      foundDate: '2024-01-10',
+      location: 'Metropolitan Museum',
+    },
+    {
+      id: '2',
+      title: 'Digital Dreams',
+      curator: 'Sarah Johnson',
+      category: 'Digital Art',
+      submittedDate: '2024-01-14',
+      status: 'approved',
+      images: ['/src/assets/sample-art-2.jpg'],
+      description: 'A digital artwork that blends reality with dreams through innovative techniques.',
+      dimension: '1920 x 1080 pixels',
+      tags: 'digital, surreal, technology',
+      culture: 'Digital Age',
+      department: 'Digital Media',
+      period: 'Contemporary',
+      foundDate: '2024-01-12',
+      location: 'Digital Arts Center',
+    },
+    {
+      id: '3',
+      title: 'Urban Sculpture',
+      curator: 'Mike Davis',
+      category: 'Sculpture',
+      submittedDate: '2024-01-13',
+      status: 'rejected',
+      images: ['/src/assets/sample-art-3.jpg', '/src/assets/sample-art-4.jpg', '/src/assets/sample-art-5.jpg'],
+      description: 'A modern sculpture representing the complexity of urban life.',
+      dimension: '8 x 6 x 4 feet',
+      tags: 'sculpture, urban, modern',
+      culture: 'Urban Contemporary',
+      department: 'Sculpture',
+      period: 'Modern',
+      foundDate: '2024-01-08',
+      location: 'City Art Gallery',
+    },
+    {
+      id: '4',
+      title: "Nature's Whisper",
+      curator: 'Emily Chen',
+      category: 'Photography',
+      submittedDate: '2024-01-12',
+      status: 'pending',
+      images: ['/src/assets/sample-art-4.jpg'],
+      description: 'A photography series capturing the subtle beauty of natural landscapes.',
+      dimension: '16 x 20 inches',
+      tags: 'photography, nature, landscape',
+      culture: 'Environmental Art',
+      department: 'Photography',
+      period: 'Contemporary',
+      foundDate: '2024-01-05',
+      location: 'Nature Museum',
+    },
   ];
 
-  const filteredArtworks = artworks.filter(artwork =>
-    artwork.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    artwork.curator.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    artwork.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [arts, setArts] = useState<ArtSubmission[]>(initialSubmissions);
+  const [selectedArt, setSelectedArt] = useState<ArtSubmission | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
-  const getStatusBadgeVariant = (status: string) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'approved': return 'default';
-      case 'rejected': return 'destructive';
-      case 'pending': return 'outline';
-      default: return 'secondary';
+      case 'pending':
+        return (
+          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+            <Clock className="h-3 w-3 mr-1" />Pending
+          </Badge>
+        );
+      case 'approved':
+        return (
+          <Badge variant="secondary" className="bg-green-100 text-green-800">
+            <CheckCircle className="h-3 w-3 mr-1" />Approved
+          </Badge>
+        );
+      case 'rejected':
+        return (
+          <Badge variant="secondary" className="bg-red-100 text-red-800">
+            <X className="h-3 w-3 mr-1" />Rejected
+          </Badge>
+        );
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
     }
   };
 
+  const pendingArts = arts.filter((a) => a.status === 'pending');
+  const approvedArts = arts.filter((a) => a.status === 'approved');
+  const rejectedArts = arts.filter((a) => a.status === 'rejected');
+
+  const handleDelete = (id: string) => {
+    setArts((prev) => prev.filter((a) => a.id !== id));
+    if (selectedArt?.id === id) setIsViewDialogOpen(false);
+  };
+
+  const ArtTable = ({ list }: { list: ArtSubmission[] }) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Artwork</TableHead>
+          <TableHead>Curator</TableHead>
+          <TableHead>Category</TableHead>
+          <TableHead>Submitted</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {list.map((art) => (
+          <TableRow key={art.id}>
+            <TableCell>
+              <div className="flex items-center space-x-3">
+                <img
+                  src={art.images[0]}
+                  alt={art.title}
+                  className="w-12 h-12 rounded object-cover"
+                />
+                <div>
+                  <p className="font-medium">{art.title}</p>
+                  <p className="text-sm text-muted-foreground truncate max-w-[200px]">
+                    {art.description}
+                  </p>
+                  {art.images.length > 1 && (
+                    <p className="text-xs text-muted-foreground">+{art.images.length - 1} more</p>
+                  )}
+                </div>
+              </div>
+            </TableCell>
+            <TableCell>{art.curator}</TableCell>
+            <TableCell>{art.category}</TableCell>
+            <TableCell>{art.submittedDate}</TableCell>
+            <TableCell>{getStatusBadge(art.status)}</TableCell>
+            <TableCell>
+              <div className="flex space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedArt(art);
+                    setSelectedImageIndex(0);
+                    setIsViewDialogOpen(true);
+                  }}
+                >
+                  <Eye className="h-4 w-4 mr-1" />
+                  View Details
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDelete(art.id)}
+                >
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Delete
+                </Button>
+              </div>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-surface/50 to-background p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header with Back Button */}
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header with back button */}
         <div className="flex items-center gap-4 mb-8">
-          <Link to="/admin">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-4xl font-bold text-primary">Review Arts</h1>
-            <p className="text-muted-foreground text-lg">
-              Review and manage artwork submissions
-            </p>
-          </div>
+          <Button variant="outline" size="sm" onClick={() => navigate('/admin')}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
+          <h1 className="text-3xl font-bold text-foreground">Review Art Submissions</h1>
         </div>
 
-        <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
+        {/* Tabs and table (mirrors Professor page) */}
+        <Card>
           <CardHeader>
-            <CardTitle>Artwork Submissions</CardTitle>
-            <CardDescription>
-              Review curator submissions and manage approval status
-            </CardDescription>
+            <CardTitle>Art Submissions</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* Search */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  placeholder="Search artworks by title, curator, or category..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
+            <Tabs defaultValue="pending" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="pending">Pending ({pendingArts.length})</TabsTrigger>
+                <TabsTrigger value="approved">Approved ({approvedArts.length})</TabsTrigger>
+                <TabsTrigger value="rejected">Rejected ({rejectedArts.length})</TabsTrigger>
+              </TabsList>
 
-            {/* Artworks Table */}
-            <div className="rounded-md border border-border/50">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Artwork</TableHead>
-                    <TableHead>Curator</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Submitted</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredArtworks.map((artwork) => (
-                    <TableRow key={artwork.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <img 
-                            src={artwork.imageUrl} 
-                            alt={artwork.title}
-                            className="w-12 h-12 object-cover rounded-lg"
-                          />
-                          <div>
-                            <div className="font-medium">{artwork.title}</div>
-                            <div className="text-sm text-muted-foreground">{artwork.description}</div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>{artwork.curator}</TableCell>
-                      <TableCell>{artwork.category}</TableCell>
-                      <TableCell>
-                        <Badge variant={getStatusBadgeVariant(artwork.status)}>
-                          {artwork.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{artwork.submittedDate}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button variant="outline" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          {artwork.status === 'pending' && (
-                            <>
-                              <Button variant="default" size="sm">
-                                <CheckCircle className="h-4 w-4" />
-                              </Button>
-                              <Button variant="destructive" size="sm">
-                                <XCircle className="h-4 w-4" />
-                              </Button>
-                            </>
-                          )}
-                          <Button variant="outline" size="sm">
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+              <TabsContent value="pending" className="mt-6">
+                <ArtTable list={pendingArts} />
+              </TabsContent>
 
-            {filteredArtworks.length === 0 && (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No artworks found matching your search.</p>
-              </div>
-            )}
+              <TabsContent value="approved" className="mt-6">
+                <ArtTable list={approvedArts} />
+              </TabsContent>
+
+              <TabsContent value="rejected" className="mt-6">
+                <ArtTable list={rejectedArts} />
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
+
+        {/* View Details Dialog (shared with Professor page layout) */}
+        <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Artwork Details</DialogTitle>
+            </DialogHeader>
+            {selectedArt && (
+              <div className="space-y-6">
+                {/* Images Gallery */}
+                <div className="space-y-4">
+                  <h4 className="font-semibold">Artwork Images</h4>
+                  <div className="aspect-video w-full overflow-hidden rounded-lg bg-muted">
+                    <img
+                      src={selectedArt.images[selectedImageIndex || 0]}
+                      alt={selectedArt.title}
+                      className="w-full h-full object-cover cursor-pointer"
+                      onClick={() => window.open(selectedArt.images[selectedImageIndex || 0], '_blank')}
+                    />
+                  </div>
+                  {selectedArt.images.length > 1 && (
+                    <div className="grid grid-cols-4 gap-2">
+                      {selectedArt.images.map((image, index) => (
+                        <div
+                          key={index}
+                          className={`cursor-pointer group relative overflow-hidden rounded border-2 transition-all duration-300 ${
+                            (selectedImageIndex || 0) === index ? 'border-primary shadow-lg' : 'border-transparent hover:border-muted-foreground/30'
+                          }`}
+                          onClick={() => setSelectedImageIndex(index)}
+                        >
+                          <img
+                            src={image}
+                            alt={`${selectedArt.title} view ${index + 1}`}
+                            className="w-full h-20 object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                          {(selectedImageIndex || 0) === index && (
+                            <div className="absolute inset-0 bg-primary/10 pointer-events-none" />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Basic Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Title</label>
+                      <p className="text-lg font-semibold">{selectedArt.title}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Description</label>
+                      <p className="text-sm">{selectedArt.description}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Dimension</label>
+                      <p className="text-sm">{selectedArt.dimension}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Category</label>
+                      <p className="text-sm">{selectedArt.category}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Tags</label>
+                      <p className="text-sm">{selectedArt.tags}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Culture</label>
+                      <p className="text-sm">{selectedArt.culture}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Department</label>
+                      <p className="text-sm">{selectedArt.department}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Period</label>
+                      <p className="text-sm">{selectedArt.period}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Exact Found Date</label>
+                      <p className="text-sm">{selectedArt.foundDate}</p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Location</label>
+                      <p className="text-sm">{selectedArt.location}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submission Information */}
+                <div className="border-t pt-4">
+                  <h4 className="font-semibold mb-4">Submission Information</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Curator</label>
+                      <p>{selectedArt.curator}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Submitted Date</label>
+                      <p>{selectedArt.submittedDate}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Status</label>
+                      <div className="mt-1">{getStatusBadge(selectedArt.status)}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
