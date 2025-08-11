@@ -9,6 +9,7 @@ import sampleArt3 from '@/assets/sample-art-3.jpg';
 import sampleArt4 from '@/assets/sample-art-4.jpg';
 import sampleArt5 from '@/assets/sample-art-5.jpg';
 import sampleArt6 from '@/assets/sample-art-6.jpg';
+import { AnnouncementsSection } from '@/components/AnnouncementsSection';
 
 const Index = () => {
   const images = [sampleArt1, sampleArt2, sampleArt3, sampleArt4, sampleArt5, sampleArt6];
@@ -140,6 +141,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Announcements */}
+      <AnnouncementsSection />
 
       {/* Call to Action */}
       <section className="py-20 bg-gradient-rich text-primary-foreground">
