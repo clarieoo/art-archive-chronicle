@@ -185,15 +185,6 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       </Link>
 
                       <Link 
-                        to="/admin/arts" 
-                        onClick={handleItemClick}
-                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
-                      >
-                        <CheckCircle className="h-5 w-5" />
-                        <span>Review Arts</span>
-                      </Link>
-
-                      <Link 
                         to="/admin/announcements/new" 
                         onClick={handleItemClick}
                         className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"

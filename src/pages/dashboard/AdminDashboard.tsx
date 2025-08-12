@@ -24,14 +24,6 @@ export default function AdminDashboard() {
       color: "text-green-600"
     },
     {
-      title: "Review Arts",
-      description: "Review and approve artwork submissions",
-      icon: FolderOpen,
-      path: "/admin/arts",
-      count: "89",
-      color: "text-orange-600"
-    },
-    {
       title: "Make Announcement",
       description: "Publish updates, events, or maintenance",
       icon: Megaphone,
@@ -53,7 +45,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {dashboardItems.map((item) => {
             const IconComponent = item.icon;
             return (
