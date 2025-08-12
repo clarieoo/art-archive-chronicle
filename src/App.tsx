@@ -28,10 +28,11 @@ import ProfessorDashboard from "./pages/dashboard/ProfessorDashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ReviewArts from "./pages/admin/ReviewArts";
 import MakeAnnouncement from "./pages/admin/MakeAnnouncement";
-import { ManageArtworks as AdminManageArtworks } from "./pages/admin/ManageArtworks";
+
 import CuratorApplications from "./pages/professor/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
 import { ManageArtworks } from "./pages/curator/ManageArtworks";
+import { ManageArtworks as AdminManageArtworks } from "./pages/admin/ManageArtworks";
 import { ReviewArts as ProfessorReviewArts } from "./pages/professor/ReviewArts";
 import VisitorPage from "./pages/visitor/VisitorPage";
 import { Notifications } from "./pages/Notifications";
@@ -74,7 +75,6 @@ const App = () => (
             <Route path="/admin" element={<DashboardLayout userRole="admin" />}>
               <Route index element={<AdminDashboard />} />
               <Route path="users" element={<ManageUsers />} />
-              <Route path="arts" element={<ReviewArts />} />
               <Route path="manage-artworks" element={<AdminManageArtworks />} />
               <Route path="announcements/new" element={<MakeAnnouncement />} />
             </Route>

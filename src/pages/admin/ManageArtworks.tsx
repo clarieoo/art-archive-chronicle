@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, Eye, Edit, Trash2, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Edit, Trash2, Eye, Search, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 // Mock data for artworks (50+ items)
@@ -111,9 +111,6 @@ export const ManageArtworks = () => {
       <Card>
         <CardHeader>
           <CardTitle>All Artworks</CardTitle>
-          <CardDescription>
-            View and manage all artworks uploaded by curators
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4 mb-6">

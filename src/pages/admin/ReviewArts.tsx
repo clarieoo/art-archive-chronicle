@@ -28,20 +28,8 @@ interface ArtSubmission {
 
 export default function ReviewArts() {
   const navigate = useNavigate();
-
-  // Page SEO
-  useEffect(() => {
-    document.title = 'Admin | Review Art Submissions';
-    const meta = document.querySelector('meta[name="description"]');
-    const content = 'Admin review art submissions dashboard with tabs and details.';
-    if (meta) meta.setAttribute('content', content);
-    else {
-      const m = document.createElement('meta');
-      m.name = 'description';
-      m.content = content;
-      document.head.appendChild(m);
-    }
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // Local state copied from Professor page (with delete support)
   const initialSubmissions: ArtSubmission[] = [
@@ -120,6 +108,11 @@ export default function ReviewArts() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
+  // Pagination calculations
+  const totalPages = Math.ceil(arts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedArts = arts.slice(startIndex, startIndex + itemsPerPage);
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
@@ -155,70 +148,97 @@ export default function ReviewArts() {
   };
 
   const ArtTable = ({ list }: { list: ArtSubmission[] }) => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Artwork</TableHead>
-          <TableHead>Curator</TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>Submitted</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {list.map((art) => (
-          <TableRow key={art.id}>
-            <TableCell>
-              <div className="flex items-center space-x-3">
-                <img
-                  src={art.images[0]}
-                  alt={art.title}
-                  className="w-12 h-12 rounded object-cover"
-                />
-                <div>
-                  <p className="font-medium">{art.title}</p>
-                  <p className="text-sm text-muted-foreground truncate max-w-[200px]">
-                    {art.description}
-                  </p>
-                  {art.images.length > 1 && (
-                    <p className="text-xs text-muted-foreground">+{art.images.length - 1} more</p>
-                  )}
-                </div>
-              </div>
-            </TableCell>
-            <TableCell>{art.curator}</TableCell>
-            <TableCell>{art.category}</TableCell>
-            <TableCell>{art.submittedDate}</TableCell>
-            <TableCell>{getStatusBadge(art.status)}</TableCell>
-            <TableCell>
-              <div className="flex space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setSelectedArt(art);
-                    setSelectedImageIndex(0);
-                    setIsViewDialogOpen(true);
-                  }}
-                >
-                  <Eye className="h-4 w-4 mr-1" />
-                  View Details
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(art.id)}
-                >
-                  <Trash2 className="h-4 w-4 mr-1" />
-                  Delete
-                </Button>
-              </div>
-            </TableCell>
+    <div className="space-y-4">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Artwork</TableHead>
+            <TableHead>Curator</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Submitted</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {list.map((art) => (
+            <TableRow key={art.id}>
+              <TableCell>
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={art.images[0]}
+                    alt={art.title}
+                    className="w-12 h-12 rounded object-cover"
+                  />
+                  <div>
+                    <p className="font-medium">{art.title}</p>
+                    <p className="text-sm text-muted-foreground truncate max-w-[200px]">
+                      {art.description}
+                    </p>
+                    {art.images.length > 1 && (
+                      <p className="text-xs text-muted-foreground">+{art.images.length - 1} more</p>
+                    )}
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell>{art.curator}</TableCell>
+              <TableCell>{art.category}</TableCell>
+              <TableCell>{art.submittedDate}</TableCell>
+              <TableCell>
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedArt(art);
+                      setSelectedImageIndex(0);
+                      setIsViewDialogOpen(true);
+                    }}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    View Details
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(art.id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    Delete
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-muted-foreground">
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button
+              variant="outline" 
+              size="sm"
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 
   return (
@@ -230,34 +250,16 @@ export default function ReviewArts() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
-          <h1 className="text-3xl font-bold text-foreground">Review Art Submissions</h1>
+          <h1 className="text-3xl font-bold text-foreground">Manage Artworks</h1>
         </div>
 
         {/* Tabs and table (mirrors Professor page) */}
         <Card>
           <CardHeader>
-            <CardTitle>Art Submissions</CardTitle>
+            <CardTitle>All Artworks ({arts.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="pending" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="pending">Pending ({pendingArts.length})</TabsTrigger>
-                <TabsTrigger value="approved">Approved ({approvedArts.length})</TabsTrigger>
-                <TabsTrigger value="rejected">Rejected ({rejectedArts.length})</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="pending" className="mt-6">
-                <ArtTable list={pendingArts} />
-              </TabsContent>
-
-              <TabsContent value="approved" className="mt-6">
-                <ArtTable list={approvedArts} />
-              </TabsContent>
-
-              <TabsContent value="rejected" className="mt-6">
-                <ArtTable list={rejectedArts} />
-              </TabsContent>
-            </Tabs>
+            <ArtTable list={paginatedArts} />
           </CardContent>
         </Card>
 
