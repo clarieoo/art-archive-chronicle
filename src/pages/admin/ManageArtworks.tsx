@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { ArrowLeft, Eye, Search } from 'lucide-react';
+import { ArrowLeft, Eye, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
@@ -31,21 +30,20 @@ const mockArtworks = generateMockArtworks();
 
 export const ManageArtworks = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [artworks, setArtworks] = useState(mockArtworks);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filteredArtworks = mockArtworks.filter(artwork => 
-    artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    artwork.curator.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredArtworks.length / itemsPerPage);
+  const totalPages = Math.ceil(artworks.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedArtworks = filteredArtworks.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedArtworks = artworks.slice(startIndex, startIndex + itemsPerPage);
 
   const handleViewDetails = (id: number) => {
     navigate(`/artwork/art-${id}`);
+  };
+
+  const handleDelete = (id: number) => {
+    setArtworks(prevArtworks => prevArtworks.filter(artwork => artwork.id !== id));
   };
 
   return (
@@ -67,58 +65,12 @@ export const ManageArtworks = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Artworks</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">{mockArtworks.length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Views</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">
-              {mockArtworks.reduce((sum, artwork) => sum + artwork.views, 0)}
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Likes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-foreground">
-              {mockArtworks.reduce((sum, artwork) => sum + artwork.likes, 0)}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Artworks Table */}
       <Card>
         <CardHeader>
           <CardTitle>All Artworks</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4 mb-6">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                <Input
-                  placeholder="Search artworks..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-          </div>
-
           <div className="rounded-md border">
             <Table>
               <TableHeader>
@@ -126,8 +78,6 @@ export const ManageArtworks = () => {
                   <TableHead>Artwork</TableHead>
                   <TableHead>Curator</TableHead>
                   <TableHead>Category</TableHead>
-                  <TableHead>Views</TableHead>
-                  <TableHead>Likes</TableHead>
                   <TableHead>Upload Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -149,18 +99,26 @@ export const ManageArtworks = () => {
                     </TableCell>
                     <TableCell>{artwork.curator}</TableCell>
                     <TableCell>{artwork.category}</TableCell>
-                    <TableCell>{artwork.views}</TableCell>
-                    <TableCell>{artwork.likes}</TableCell>
                     <TableCell>{new Date(artwork.uploadDate).toLocaleDateString()}</TableCell>
                      <TableCell className="text-right">
-                       <Button
-                         variant="outline"
-                         size="sm"
-                         onClick={() => handleViewDetails(artwork.id)}
-                       >
-                         <Eye className="w-4 h-4 mr-1" />
-                         View Details
-                       </Button>
+                       <div className="flex gap-2 justify-end">
+                         <Button
+                           variant="outline"
+                           size="sm"
+                           onClick={() => handleViewDetails(artwork.id)}
+                         >
+                           <Eye className="w-4 h-4 mr-1" />
+                           View Details
+                         </Button>
+                         <Button
+                           variant="destructive"
+                           size="sm"
+                           onClick={() => handleDelete(artwork.id)}
+                         >
+                           <Trash2 className="w-4 h-4 mr-1" />
+                           Delete
+                         </Button>
+                       </div>
                      </TableCell>
                   </TableRow>
                 ))}
