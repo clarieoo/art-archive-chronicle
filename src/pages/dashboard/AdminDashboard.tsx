@@ -17,11 +17,19 @@ export default function AdminDashboard() {
     },
     {
       title: "Manage Artworks",
-      description: "Manage and review artwork submissions",
+      description: "View and manage all artworks",
       icon: Image,
+      path: "/admin/manage-artworks",
+      count: "53",
+      color: "text-green-600"
+    },
+    {
+      title: "Review Arts",
+      description: "Review and approve artwork submissions",
+      icon: FolderOpen,
       path: "/admin/arts",
       count: "89",
-      color: "text-green-600"
+      color: "text-orange-600"
     },
     {
       title: "Make Announcement",
@@ -45,7 +53,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {dashboardItems.map((item) => {
             const IconComponent = item.icon;
             return (

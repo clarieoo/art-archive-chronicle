@@ -2,29 +2,26 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Edit, Trash2, Eye, Search, Filter, ArrowLeft } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Edit, Trash2, Eye, Search, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
-// Generate mock data for 50+ artworks
+// Mock data for artworks (50+ items)
 const generateMockArtworks = () => {
   const categories = ['Photography', 'Digital Art', 'Painting', 'Mixed Media', 'Sculpture', 'Illustration'];
-  const statuses = ['approved', 'pending', 'rejected'];
   const artworks = [];
   
-  for (let i = 1; i <= 52; i++) {
+  for (let i = 1; i <= 53; i++) {
     artworks.push({
       id: i,
       title: `Artwork ${i}`,
       category: categories[Math.floor(Math.random() * categories.length)],
-      status: statuses[Math.floor(Math.random() * statuses.length)],
       views: Math.floor(Math.random() * 500) + 50,
       likes: Math.floor(Math.random() * 50) + 1,
       uploadDate: new Date(2024, Math.floor(Math.random() * 2), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
-      image: `/src/assets/sample-art-${((i - 1) % 6) + 1}.jpg`
+      image: `/src/assets/sample-art-${((i - 1) % 6) + 1}.jpg`,
+      curator: `Curator ${Math.floor(Math.random() * 10) + 1}`
     });
   }
   return artworks;
@@ -35,46 +32,28 @@ const mockArtworks = generateMockArtworks();
 export const ManageArtworks = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filteredArtworks = mockArtworks.filter(artwork => {
-    const matchesSearch = artwork.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || artwork.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const filteredArtworks = mockArtworks.filter(artwork => 
+    artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    artwork.curator.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalPages = Math.ceil(filteredArtworks.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedArtworks = filteredArtworks.slice(startIndex, startIndex + itemsPerPage);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'approved':
-        return 'bg-green-100 text-green-800';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'rejected':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   const handleEdit = (id: number) => {
     console.log('Edit artwork:', id);
-    // TODO: Implement edit functionality
   };
 
   const handleDelete = (id: number) => {
     console.log('Delete artwork:', id);
-    // TODO: Implement delete functionality
   };
 
   const handleView = (id: number) => {
     console.log('View artwork:', id);
-    // TODO: Navigate to artwork detail page
   };
 
   return (
@@ -83,7 +62,7 @@ export const ManageArtworks = () => {
         <Button 
           variant="outline" 
           size="sm"
-          onClick={() => navigate('/curator')}
+          onClick={() => navigate('/admin')}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Dashboard
@@ -91,39 +70,19 @@ export const ManageArtworks = () => {
         <div>
           <h1 className="text-3xl font-bold text-foreground">Manage Artworks</h1>
           <p className="text-muted-foreground mt-2">
-            Manage your uploaded artworks, edit details, and track performance
+            Manage all artworks uploaded by curators
           </p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Artworks</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">{mockArtworks.length}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Approved</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {mockArtworks.filter(a => a.status === 'approved').length}
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">
-              {mockArtworks.filter(a => a.status === 'pending').length}
-            </div>
           </CardContent>
         </Card>
         <Card>
@@ -136,14 +95,24 @@ export const ManageArtworks = () => {
             </div>
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Likes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-foreground">
+              {mockArtworks.reduce((sum, artwork) => sum + artwork.likes, 0)}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Filters and Search */}
+      {/* Artworks Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Your Artworks</CardTitle>
+          <CardTitle>All Artworks</CardTitle>
           <CardDescription>
-            View and manage all your uploaded artworks
+            View and manage all artworks uploaded by curators
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -159,28 +128,15 @@ export const ManageArtworks = () => {
                 />
               </div>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
 
-          {/* Artworks Table */}
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Artwork</TableHead>
+                  <TableHead>Curator</TableHead>
                   <TableHead>Category</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead>Views</TableHead>
                   <TableHead>Likes</TableHead>
                   <TableHead>Upload Date</TableHead>
@@ -202,12 +158,8 @@ export const ManageArtworks = () => {
                         </div>
                       </div>
                     </TableCell>
+                    <TableCell>{artwork.curator}</TableCell>
                     <TableCell>{artwork.category}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(artwork.status)}>
-                        {artwork.status}
-                      </Badge>
-                    </TableCell>
                     <TableCell>{artwork.views}</TableCell>
                     <TableCell>{artwork.likes}</TableCell>
                     <TableCell>{new Date(artwork.uploadDate).toLocaleDateString()}</TableCell>

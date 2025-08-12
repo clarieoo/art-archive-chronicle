@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 interface ArtSubmission {
   id: string;
@@ -34,78 +35,43 @@ export const ReviewArts = () => {
   const [comment, setComment] = useState('');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [currentPages, setCurrentPages] = useState({
+    pending: 1,
+    approved: 1,
+    rejected: 1
+  });
+  const itemsPerPage = 10;
 
-  // Mock data - replace with actual API call
-  const artSubmissions: ArtSubmission[] = [
-    {
-      id: '1',
-      title: 'Abstract Harmony',
-      curator: 'John Smith',
-      category: 'Painting',
-      submittedDate: '2024-01-15',
-      status: 'pending',
-      images: ['/src/assets/sample-art-1.jpg', '/src/assets/sample-art-2.jpg'],
-      description: 'A vibrant abstract painting exploring the harmony between colors and forms.',
-      dimension: '24 x 36 inches',
-      tags: 'abstract, colorful, modern',
-      culture: 'Contemporary Western',
-      department: 'Fine Arts',
-      period: '21st Century',
-      foundDate: '2024-01-10',
-      location: 'Metropolitan Museum'
-    },
-    {
-      id: '2',
-      title: 'Digital Dreams',
-      curator: 'Sarah Johnson',
-      category: 'Digital Art',
-      submittedDate: '2024-01-14',
-      status: 'approved',
-      images: ['/src/assets/sample-art-2.jpg'],
-      description: 'A digital artwork that blends reality with dreams through innovative techniques.',
-      dimension: '1920 x 1080 pixels',
-      tags: 'digital, surreal, technology',
-      culture: 'Digital Age',
-      department: 'Digital Media',
-      period: 'Contemporary',
-      foundDate: '2024-01-12',
-      location: 'Digital Arts Center'
-    },
-    {
-      id: '3',
-      title: 'Urban Sculpture',
-      curator: 'Mike Davis',
-      category: 'Sculpture',
-      submittedDate: '2024-01-13',
-      status: 'rejected',
-      images: ['/src/assets/sample-art-3.jpg', '/src/assets/sample-art-4.jpg', '/src/assets/sample-art-5.jpg'],
-      description: 'A modern sculpture representing the complexity of urban life.',
-      dimension: '8 x 6 x 4 feet',
-      tags: 'sculpture, urban, modern',
-      culture: 'Urban Contemporary',
-      department: 'Sculpture',
-      period: 'Modern',
-      foundDate: '2024-01-08',
-      location: 'City Art Gallery'
-    },
-    {
-      id: '4',
-      title: 'Nature\'s Whisper',
-      curator: 'Emily Chen',
-      category: 'Photography',
-      submittedDate: '2024-01-12',
-      status: 'pending',
-      images: ['/src/assets/sample-art-4.jpg'],
-      description: 'A photography series capturing the subtle beauty of natural landscapes.',
-      dimension: '16 x 20 inches',
-      tags: 'photography, nature, landscape',
-      culture: 'Environmental Art',
-      department: 'Photography',
-      period: 'Contemporary',
-      foundDate: '2024-01-05',
-      location: 'Nature Museum'
+  // Generate mock data for 50+ submissions
+  const generateArtSubmissions = (): ArtSubmission[] => {
+    const categories = ['Painting', 'Digital Art', 'Sculpture', 'Photography', 'Mixed Media'];
+    const curators = ['John Smith', 'Sarah Johnson', 'Mike Davis', 'Emily Chen', 'Alex Brown', 'Lisa Wilson', 'David Lee', 'Maria Garcia'];
+    const statuses: ('pending' | 'approved' | 'rejected')[] = ['pending', 'approved', 'rejected'];
+    const submissions = [];
+    
+    for (let i = 1; i <= 54; i++) {
+      submissions.push({
+        id: i.toString(),
+        title: `Artwork Submission ${i}`,
+        curator: curators[Math.floor(Math.random() * curators.length)],
+        category: categories[Math.floor(Math.random() * categories.length)],
+        submittedDate: new Date(2024, Math.floor(Math.random() * 2), Math.floor(Math.random() * 28) + 1).toISOString().split('T')[0],
+        status: statuses[Math.floor(Math.random() * statuses.length)],
+        images: [`/src/assets/sample-art-${((i - 1) % 6) + 1}.jpg`],
+        description: `Description for artwork submission ${i}. This piece explores various themes and techniques.`,
+        dimension: '24 x 36 inches',
+        tags: 'contemporary, modern, artistic',
+        culture: 'Contemporary',
+        department: 'Fine Arts',
+        period: '21st Century',
+        foundDate: new Date(2024, 0, Math.floor(Math.random() * 30) + 1).toISOString().split('T')[0],
+        location: 'Art Museum'
+      });
     }
-  ];
+    return submissions;
+  };
+
+  const artSubmissions = generateArtSubmissions();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -136,156 +102,229 @@ export const ReviewArts = () => {
   const approvedArts = artSubmissions.filter(art => art.status === 'approved');
   const rejectedArts = artSubmissions.filter(art => art.status === 'rejected');
 
-  const ArtTable = ({ arts }: { arts: ArtSubmission[] }) => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Artwork</TableHead>
-          <TableHead>Curator</TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>Submitted</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {arts.map((art) => (
-          <TableRow key={art.id}>
-            <TableCell>
-              <div className="flex items-center space-x-3">
-                <img 
-                  src={art.images[0]} 
-                  alt={art.title}
-                  className="w-12 h-12 rounded object-cover"
-                />
-                <div>
-                  <p className="font-medium">{art.title}</p>
-                  <p className="text-sm text-muted-foreground truncate max-w-[200px]">
-                    {art.description}
-                  </p>
-                  {art.images.length > 1 && (
-                    <p className="text-xs text-muted-foreground">+{art.images.length - 1} more</p>
-                  )}
-                </div>
-              </div>
-            </TableCell>
-            <TableCell>{art.curator}</TableCell>
-            <TableCell>{art.category}</TableCell>
-            <TableCell>{art.submittedDate}</TableCell>
-            <TableCell>{getStatusBadge(art.status)}</TableCell>
-            <TableCell>
-              <div className="flex space-x-2">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => {
-                    setSelectedArt(art);
-                    setSelectedImageIndex(0);
-                    setIsViewDialogOpen(true);
-                  }}
-                >
-                  <Eye className="h-4 w-4 mr-1" />
-                  View Details
-                </Button>
+  const getPaginatedArts = (arts: ArtSubmission[], status: 'pending' | 'approved' | 'rejected') => {
+    const startIndex = (currentPages[status] - 1) * itemsPerPage;
+    return arts.slice(startIndex, startIndex + itemsPerPage);
+  };
 
-                {/* Approve/Reject buttons for pending items */}
-                {art.status === 'pending' && (
-                  <>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="sm"
-                          className="bg-green-600 hover:bg-green-700 text-white"
-                          onClick={() => setSelectedArt(art)}
-                        >
-                          <CheckCircle className="h-4 w-4 mr-1" />
-                          Approve
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Approve Artwork</DialogTitle>
-                        </DialogHeader>
-                        {selectedArt && (
-                          <div className="space-y-4">
-                            <p>Are you sure you want to approve "{selectedArt.title}" by {selectedArt.curator}?</p>
-                            <div className="space-y-2">
-                              <Label htmlFor="approveComment">Approval Comment (Optional)</Label>
-                              <Textarea
-                                id="approveComment"
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                placeholder="Add your approval comment here..."
-                                rows={3}
-                              />
-                            </div>
-                            <div className="flex space-x-2">
-                              <Button 
-                                onClick={() => handleApprove(selectedArt.id)}
-                                className="flex-1"
-                              >
-                                <CheckCircle className="h-4 w-4 mr-2" />
-                                Confirm Approval
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
+  const getTotalPages = (arts: ArtSubmission[]) => Math.ceil(arts.length / itemsPerPage);
 
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => setSelectedArt(art)}
-                        >
-                          <X className="h-4 w-4 mr-1" />
-                          Reject
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Reject Artwork</DialogTitle>
-                        </DialogHeader>
-                        {selectedArt && (
-                          <div className="space-y-4">
-                            <p>Are you sure you want to reject "{selectedArt.title}" by {selectedArt.curator}?</p>
-                            <div className="space-y-2">
-                              <Label htmlFor="rejectComment">Rejection Reason (Required)</Label>
-                              <Textarea
-                                id="rejectComment"
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                placeholder="Please provide a reason for rejection..."
-                                rows={3}
-                                required
-                              />
-                            </div>
-                            <div className="flex space-x-2">
-                              <Button 
-                                variant="destructive"
-                                onClick={() => handleReject(selectedArt.id)}
-                                className="flex-1"
-                                disabled={!comment.trim()}
-                              >
-                                <X className="h-4 w-4 mr-2" />
-                                Confirm Rejection
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
-                  </>
-                )}
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+  const ArtTable = ({ arts, status }: { arts: ArtSubmission[], status: 'pending' | 'approved' | 'rejected' }) => {
+    const paginatedArts = getPaginatedArts(arts, status);
+    const totalPages = getTotalPages(arts);
+    
+    return (
+      <div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Artwork</TableHead>
+              <TableHead>Curator</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Submitted</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedArts.map((art) => (
+              <TableRow key={art.id}>
+                <TableCell>
+                  <div className="flex items-center space-x-3">
+                    <img 
+                      src={art.images[0]} 
+                      alt={art.title}
+                      className="w-12 h-12 rounded object-cover"
+                    />
+                    <div>
+                      <p className="font-medium">{art.title}</p>
+                      <p className="text-sm text-muted-foreground truncate max-w-[200px]">
+                        {art.description}
+                      </p>
+                      {art.images.length > 1 && (
+                        <p className="text-xs text-muted-foreground">+{art.images.length - 1} more</p>
+                      )}
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{art.curator}</TableCell>
+                <TableCell>{art.category}</TableCell>
+                <TableCell>{art.submittedDate}</TableCell>
+                <TableCell>{getStatusBadge(art.status)}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
+                        setSelectedArt(art);
+                        setSelectedImageIndex(0);
+                        setIsViewDialogOpen(true);
+                      }}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      View Details
+                    </Button>
+
+                    {/* Approve/Reject buttons for pending items */}
+                    {art.status === 'pending' && (
+                      <>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                              onClick={() => setSelectedArt(art)}
+                            >
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                              Approve
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Approve Artwork</DialogTitle>
+                            </DialogHeader>
+                            {selectedArt && (
+                              <div className="space-y-4">
+                                <p>Are you sure you want to approve "{selectedArt.title}" by {selectedArt.curator}?</p>
+                                <div className="space-y-2">
+                                  <Label htmlFor="approveComment">Approval Comment (Optional)</Label>
+                                  <Textarea
+                                    id="approveComment"
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    placeholder="Add your approval comment here..."
+                                    rows={3}
+                                  />
+                                </div>
+                                <div className="flex space-x-2">
+                                  <Button 
+                                    onClick={() => handleApprove(selectedArt.id)}
+                                    className="flex-1"
+                                  >
+                                    <CheckCircle className="h-4 w-4 mr-2" />
+                                    Confirm Approval
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                          </DialogContent>
+                        </Dialog>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => setSelectedArt(art)}
+                            >
+                              <X className="h-4 w-4 mr-1" />
+                              Reject
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Reject Artwork</DialogTitle>
+                            </DialogHeader>
+                            {selectedArt && (
+                              <div className="space-y-4">
+                                <p>Are you sure you want to reject "{selectedArt.title}" by {selectedArt.curator}?</p>
+                                <div className="space-y-2">
+                                  <Label htmlFor="rejectComment">Rejection Reason (Required)</Label>
+                                  <Textarea
+                                    id="rejectComment"
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    placeholder="Please provide a reason for rejection..."
+                                    rows={3}
+                                    required
+                                  />
+                                </div>
+                                <div className="flex space-x-2">
+                                  <Button 
+                                    variant="destructive"
+                                    onClick={() => handleReject(selectedArt.id)}
+                                    className="flex-1"
+                                    disabled={!comment.trim()}
+                                  >
+                                    <X className="h-4 w-4 mr-2" />
+                                    Confirm Rejection
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                          </DialogContent>
+                        </Dialog>
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-4">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPages[status] > 1) {
+                        setCurrentPages(prev => ({
+                          ...prev,
+                          [status]: prev[status] - 1
+                        }));
+                      }
+                    }}
+                    className={currentPages[status] === 1 ? 'pointer-events-none opacity-50' : ''}
+                  />
+                </PaginationItem>
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPages(prev => ({
+                          ...prev,
+                          [status]: page
+                        }));
+                      }}
+                      isActive={currentPages[status] === page}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPages[status] < totalPages) {
+                        setCurrentPages(prev => ({
+                          ...prev,
+                          [status]: prev[status] + 1
+                        }));
+                      }
+                    }}
+                    className={currentPages[status] === totalPages ? 'pointer-events-none opacity-50' : ''}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -317,15 +356,15 @@ export const ReviewArts = () => {
               </TabsList>
               
               <TabsContent value="pending" className="mt-6">
-                <ArtTable arts={pendingArts} />
+                <ArtTable arts={pendingArts} status="pending" />
               </TabsContent>
               
               <TabsContent value="approved" className="mt-6">
-                <ArtTable arts={approvedArts} />
+                <ArtTable arts={approvedArts} status="approved" />
               </TabsContent>
               
               <TabsContent value="rejected" className="mt-6">
-                <ArtTable arts={rejectedArts} />
+                <ArtTable arts={rejectedArts} status="rejected" />
               </TabsContent>
             </Tabs>
           </CardContent>

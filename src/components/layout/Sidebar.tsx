@@ -176,12 +176,21 @@ export const Sidebar = ({ isOpen, onClose, userRole = 'visitor', isAuthenticated
                       </Link>
 
                       <Link 
+                        to="/admin/manage-artworks" 
+                        onClick={handleItemClick}
+                        className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
+                      >
+                        <Image className="h-5 w-5" />
+                        <span>Manage Artworks</span>
+                      </Link>
+
+                      <Link 
                         to="/admin/arts" 
                         onClick={handleItemClick}
                         className="flex items-center space-x-3 px-0 py-3 text-foreground hover:text-primary transition-colors"
                       >
                         <CheckCircle className="h-5 w-5" />
-                        <span>Manage Artworks</span>
+                        <span>Review Arts</span>
                       </Link>
 
                       <Link 
