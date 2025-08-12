@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Eye, Edit, Trash2, Search } from 'lucide-react';
+import { ArrowLeft, Eye, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,16 +44,8 @@ export const ManageArtworks = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedArtworks = filteredArtworks.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleEdit = (id: number) => {
-    console.log('Edit artwork:', id);
-  };
-
-  const handleDelete = (id: number) => {
-    console.log('Delete artwork:', id);
-  };
-
-  const handleView = (id: number) => {
-    console.log('View artwork:', id);
+  const handleViewDetails = (id: number) => {
+    navigate(`/artwork/art-${id}`);
   };
 
   return (
@@ -160,32 +152,16 @@ export const ManageArtworks = () => {
                     <TableCell>{artwork.views}</TableCell>
                     <TableCell>{artwork.likes}</TableCell>
                     <TableCell>{new Date(artwork.uploadDate).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleView(artwork.id)}
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEdit(artwork.id)}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(artwork.id)}
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+                     <TableCell className="text-right">
+                       <Button
+                         variant="outline"
+                         size="sm"
+                         onClick={() => handleViewDetails(artwork.id)}
+                       >
+                         <Eye className="w-4 h-4 mr-1" />
+                         View Details
+                       </Button>
+                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
