@@ -12,16 +12,37 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function ManageUsers() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const users = [
     { id: 1, name: "John Doe", email: "john@example.com", role: "curator", status: "active", joinDate: "2024-01-15", artworks: 12 },
     { id: 2, name: "Jane Smith", email: "jane@example.com", role: "professor", status: "active", joinDate: "2024-01-10", artworks: 0 },
     { id: 3, name: "Mike Johnson", email: "mike@example.com", role: "curator", status: "inactive", joinDate: "2024-01-05", artworks: 8 },
     { id: 4, name: "Sarah Brown", email: "sarah@example.com", role: "visitor", status: "active", joinDate: "2024-01-20", artworks: 0 },
-    { id: 5, name: "David Wilson", email: "david@example.com", role: "curator", status: "pending", joinDate: "2024-01-22", artworks: 3 }
+    { id: 5, name: "David Wilson", email: "david@example.com", role: "curator", status: "pending", joinDate: "2024-01-22", artworks: 3 },
+    { id: 6, name: "Alice Cooper", email: "alice@example.com", role: "curator", status: "active", joinDate: "2024-01-12", artworks: 15 },
+    { id: 7, name: "Bob Martin", email: "bob@example.com", role: "visitor", status: "active", joinDate: "2024-01-18", artworks: 0 },
+    { id: 8, name: "Carol Davis", email: "carol@example.com", role: "professor", status: "active", joinDate: "2024-01-08", artworks: 0 },
+    { id: 9, name: "Daniel Lee", email: "daniel@example.com", role: "curator", status: "inactive", joinDate: "2024-01-03", artworks: 6 },
+    { id: 10, name: "Eva Thompson", email: "eva@example.com", role: "curator", status: "active", joinDate: "2024-01-25", artworks: 9 },
+    { id: 11, name: "Frank Miller", email: "frank@example.com", role: "visitor", status: "pending", joinDate: "2024-01-28", artworks: 0 },
+    { id: 12, name: "Grace Wilson", email: "grace@example.com", role: "curator", status: "active", joinDate: "2024-01-14", artworks: 11 },
+    { id: 13, name: "Henry Clark", email: "henry@example.com", role: "professor", status: "active", joinDate: "2024-01-06", artworks: 0 },
+    { id: 14, name: "Iris Garcia", email: "iris@example.com", role: "curator", status: "inactive", joinDate: "2024-01-01", artworks: 4 },
+    { id: 15, name: "Jack Rodriguez", email: "jack@example.com", role: "visitor", status: "active", joinDate: "2024-01-30", artworks: 0 }
   ];
 
   const filteredUsers = users.filter(user =>
@@ -29,6 +50,16 @@ export default function ManageUsers() {
     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.role.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentUsers = filteredUsers.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
@@ -110,7 +141,7 @@ export default function ManageUsers() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredUsers.map((user) => (
+                  {currentUsers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>
                         <div>
@@ -164,6 +195,41 @@ export default function ManageUsers() {
             {filteredUsers.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-muted-foreground">No users found matching your search.</p>
+              </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-6">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          onClick={() => handlePageChange(page)}
+                          isActive={currentPage === page}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             )}
           </CardContent>

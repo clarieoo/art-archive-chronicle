@@ -6,10 +6,21 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function CuratorApplications() {
   const navigate = useNavigate();
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // Mock data for curator applications
   const applications = [
@@ -34,8 +45,62 @@ export default function CuratorApplications() {
       portfolioLink: "https://sarahjohnson-museum.com",
       status: "approved",
       submittedAt: "2024-01-10"
+    },
+    {
+      id: 3,
+      fullName: "Michael Brown",
+      email: "michael.brown@email.com",
+      education: "Bachelor's in Fine Arts, RISD",
+      experience: "2 years at Whitney Museum, focusing on contemporary art",
+      motivation: "Eager to contribute to modern art curation...",
+      portfolioLink: "https://michaelbrown-art.com",
+      status: "rejected",
+      submittedAt: "2024-01-08"
+    },
+    {
+      id: 4,
+      fullName: "Emily Davis",
+      email: "emily.davis@email.com",
+      education: "Master's in Art Curation, NYU",
+      experience: "4 years at MoMA, specializing in photography",
+      motivation: "Passionate about visual storytelling through photography...",
+      portfolioLink: "https://emilydavis-curator.com",
+      status: "pending",
+      submittedAt: "2024-01-20"
+    },
+    {
+      id: 5,
+      fullName: "Robert Wilson",
+      email: "robert.wilson@email.com",
+      education: "PhD in Art History, Princeton",
+      experience: "6 years at Guggenheim, specializing in abstract art",
+      motivation: "Dedicated to expanding abstract art appreciation...",
+      portfolioLink: "https://robertwilson-abstract.com",
+      status: "approved",
+      submittedAt: "2024-01-05"
+    },
+    {
+      id: 6,
+      fullName: "Lisa Garcia",
+      email: "lisa.garcia@email.com",
+      education: "Master's in Museum Studies, Columbia",
+      experience: "3 years at Brooklyn Museum, contemporary installations",
+      motivation: "Focused on community engagement through art...",
+      portfolioLink: "https://lisagarcia-community.com",
+      status: "pending",
+      submittedAt: "2024-01-25"
     }
   ];
+
+  // Pagination logic
+  const totalPages = Math.ceil(applications.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentApplications = applications.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const handleApprove = (id: number) => {
     console.log(`Approved application ${id}`);
@@ -81,7 +146,7 @@ export default function CuratorApplications() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {applications.map((application) => (
+            {currentApplications.map((application) => (
               <TableRow key={application.id}>
                 <TableCell className="font-medium">{application.fullName}</TableCell>
                 <TableCell>{application.email}</TableCell>
@@ -197,44 +262,38 @@ export default function CuratorApplications() {
                             </p>
                           </div>
 
-                          {application.status === 'pending' && (
-                            <div className="flex gap-3 pt-4 border-t">
-                              <Button 
-                                onClick={() => handleApprove(application.id)}
-                                className="bg-green-600 hover:bg-green-700"
-                              >
-                                Approve
-                              </Button>
-                              <Button 
-                                variant="destructive"
-                                onClick={() => handleReject(application.id)}
-                              >
-                                Reject
-                              </Button>
-                            </div>
-                          )}
+                          <div className="flex gap-3 pt-4 border-t">
+                            <Button 
+                              onClick={() => handleApprove(application.id)}
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              Approve
+                            </Button>
+                            <Button 
+                              variant="destructive"
+                              onClick={() => handleReject(application.id)}
+                            >
+                              Reject
+                            </Button>
+                          </div>
                         </div>
                       </DialogContent>
                     </Dialog>
                     
-                    {application.status === 'pending' && (
-                      <>
-                        <Button 
-                          size="sm"
-                          onClick={() => handleApprove(application.id)}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          Approve
-                        </Button>
-                        <Button 
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => handleReject(application.id)}
-                        >
-                          Reject
-                        </Button>
-                      </>
-                    )}
+                    <Button 
+                      size="sm"
+                      onClick={() => handleApprove(application.id)}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      Approve
+                    </Button>
+                    <Button 
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleReject(application.id)}
+                    >
+                      Reject
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -242,6 +301,41 @@ export default function CuratorApplications() {
           </TableBody>
         </Table>
       </Card>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-6">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                />
+              </PaginationItem>
+              
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => handlePageChange(page)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              
+              <PaginationItem>
+                <PaginationNext 
+                  onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }
