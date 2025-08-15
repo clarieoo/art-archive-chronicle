@@ -24,10 +24,10 @@ export default function AdminDashboard() {
       color: "text-green-600"
     },
     {
-      title: "Make Announcement",
+      title: "Manage Announcement",
       description: "Publish updates, events, or maintenance",
       icon: Megaphone,
-      path: "/admin/announcements/new",
+      path: "/admin/announcements",
       count: announcementsCount,
       color: "text-purple-600"
     }

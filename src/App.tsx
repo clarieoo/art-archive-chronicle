@@ -28,6 +28,7 @@ import ProfessorDashboard from "./pages/dashboard/ProfessorDashboard";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ReviewArts from "./pages/admin/ReviewArts";
 import MakeAnnouncement from "./pages/admin/MakeAnnouncement";
+import ManageAnnouncements from "./pages/admin/ManageAnnouncements";
 
 import CuratorApplications from "./pages/professor/CuratorApplications";
 import { UploadArt } from "./pages/curator/UploadArt";
@@ -76,6 +77,7 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="users" element={<ManageUsers />} />
               <Route path="manage-artworks" element={<AdminManageArtworks />} />
+              <Route path="announcements" element={<ManageAnnouncements />} />
               <Route path="announcements/new" element={<MakeAnnouncement />} />
             </Route>
 
