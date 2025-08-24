@@ -22,6 +22,7 @@ import EditProfile from "./pages/profile/EditProfile";
 import UpgradeCurator from "./pages/UpgradeCurator";
 
 import NotFound from "./pages/NotFound";
+import Error from "./pages/Error";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import CuratorDashboard from "./pages/dashboard/CuratorDashboard";
 import ProfessorDashboard from "./pages/dashboard/ProfessorDashboard";
@@ -97,6 +98,7 @@ const App = () => (
 
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/error" element={<Error />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
