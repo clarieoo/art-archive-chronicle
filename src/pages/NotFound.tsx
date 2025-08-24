@@ -18,11 +18,6 @@ const NotFound = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="text-xl font-semibold text-foreground">Art Gallery</div>
-            <nav className="hidden md:flex space-x-6">
-              <a href="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</a>
-              <a href="/gallery" className="text-muted-foreground hover:text-foreground transition-colors">Gallery</a>
-              <a href="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
-            </nav>
           </div>
         </div>
       </header>
@@ -48,18 +43,8 @@ const NotFound = () => {
             </p>
           </div>
 
-          {/* Error Details */}
-          <div className="bg-muted/50 border border-border rounded-lg p-6 mb-8 text-left">
-            <h3 className="font-semibold text-foreground mb-2">Error Details:</h3>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Error Code: 404</li>
-              <li>• Requested URL: {location.pathname}</li>
-              <li>• Timestamp: {new Date().toLocaleString()}</li>
-            </ul>
-          </div>
-
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="/" 
               className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-colors"
@@ -78,19 +63,6 @@ const NotFound = () => {
               </svg>
               Go Back
             </button>
-          </div>
-
-          {/* Help Section */}
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-4">
-              Still need help? Try these popular pages:
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              <a href="/gallery" className="px-3 py-1 text-sm bg-muted hover:bg-muted/80 rounded-full transition-colors">Gallery</a>
-              <a href="/about" className="px-3 py-1 text-sm bg-muted hover:bg-muted/80 rounded-full transition-colors">About Us</a>
-              <a href="/contact" className="px-3 py-1 text-sm bg-muted hover:bg-muted/80 rounded-full transition-colors">Contact</a>
-              <a href="/signin" className="px-3 py-1 text-sm bg-muted hover:bg-muted/80 rounded-full transition-colors">Sign In</a>
-            </div>
           </div>
         </div>
       </main>
